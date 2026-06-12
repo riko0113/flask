@@ -1,5 +1,7 @@
 from apps.crud.forms import UserForm
 from flask import Blueprint, render_template, redirect, url_for
+from flask import abort
+from flask_login import current_user, login_required
 
 crud= Blueprint(
     "crud",
@@ -39,13 +41,18 @@ def create_user():
 
 @crud.route("/users/<user_id>", methods=["GET","POST"])
 def edit_user(user_id):
-    form = UserForm()
-
-
+    if int(user_id) != current_user.id:
+        abort(403)
 
     user = User.query.filter_by(id=user_id).first()
+    if not user:
+        abort(404)
 
+    form = UserForm()
 
+    if request.method == "GET":
+        form.username.data = user.username
+        form.email.data = user.email
 
     if form.validate_on_submit():
         user.username = form.email.data
