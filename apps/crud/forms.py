@@ -21,14 +21,14 @@ class UserForm(FlaskForm):
     email = StringField(
         "メールアドレス",
         validators=[
-            DataRequired(messages="メールアドレスは必須です。"),
+            DataRequired(message="メールアドレスは必須です。"),
             Email(message="メールアドレスの形式で入力してください。"),
         ],
     )
 
     password = PasswordField(
         "パスワード",
-        validators=[DataRequired(messages="パスワードは必須です。")]
+        validators=[DataRequired(message="パスワードは必須です。")]
     )
 
     submit = SubmitField("新規登録")
