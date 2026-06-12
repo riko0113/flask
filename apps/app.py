@@ -1,9 +1,13 @@
 from flask import Flask
+from pathlib import Path
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 from apps.config import config
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 
 csrf = CSRFProtect()
+db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.signup"
