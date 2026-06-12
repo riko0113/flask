@@ -62,6 +62,7 @@ def edit_user(user_id):
         db.session.commit()
         return redirect(url_for("crud.users"))
     
+<<<<<<< HEAD
     return render_template("crud/edit.html", user=user, form=form)
 
 @crud.route("/users/<user_id>/delete", methods=["POST"])
@@ -70,3 +71,6 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for("crud.users"))
+=======
+    return render_template("crud/edit.html", user=user, form=form)
+>>>>>>> 98944c50e477481a3e0c88ae9f77f4b9aeeee645
