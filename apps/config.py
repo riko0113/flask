@@ -9,12 +9,12 @@ class BaseConfig:
     UPLOAD_FOLDER = str(Path(basedir, "apps", "images"))
 
 class LocalConfig(BaseConfig):
-    SQLALCHEMY_DARABASE_URI = f"sqlite:///{basedir/'local.sqlite'}"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{basedir/'local.sqlite'}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
 
 class TestingConfig(BaseConfig):
-    SQLALCHEMY_DARABASE_URI = f"sqlite:///{basedir/'testing.sqlite'}"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{basedir/'testing.sqlite'}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
 
