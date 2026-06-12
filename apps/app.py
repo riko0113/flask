@@ -18,7 +18,7 @@ def create_app(config_key):
 
     app.config.from_object(config[config_key])
 
-    csef.init_app(app)
+    csrf.init_app(app)
     db.init_app(app)
     Migrate(app, db)    
 
