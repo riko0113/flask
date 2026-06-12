@@ -41,11 +41,7 @@ def create_user():
 def edit_user(user_id):
     form = UserForm()
 
-
-
     user = User.query.filter_by(id=user_id).first()
-
-
 
     if form.validate_on_submit():
         user.username = form.email.data
