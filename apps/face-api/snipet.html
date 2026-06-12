@@ -61,6 +61,9 @@ body {
       <div class="title">
         <h1>顔認証ページ</h1>
       </div>
+      <a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" >
+          編集
+      </a>
       <video id="video" width="720" height="560" autoplay muted></video>
     </div> </div>
 </body>
