@@ -5,9 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>detector</title>
     <link
+<<<<<<< HEAD
         rel="stylesh">
 </head>
 <body>
     
+=======
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    />
+</head>
+<body>
+    {% block content %}{% endblock %}
+>>>>>>> 6239fb3c6435d981f1e00117a0472f8c1990f2b6
 </body>
 </html>
