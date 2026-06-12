@@ -22,10 +22,17 @@ def create_user():
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
+            birthday=form.birthday.data,
         )
 
-        db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.add(user)
+            db.session.commit()
 
-        return redirect(url_for("crud.users"))
+            return redirect(url_for("crud.users"))
+
+        except ValueError as e:
+            db.session.rollback()
+            form.birthday.errors.append(str(e))
+
     return render_template("crud/create.html, form=form")
