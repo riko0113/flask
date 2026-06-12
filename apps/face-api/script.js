@@ -39,10 +39,10 @@ video.addEventListener("play", () => {
       //年齢、性別表現ボックス
       if(detection.age > 20){
         if(confirm("お酒のページに飛びます")){
-          location.href = "https://www.suntory.co.jp/rtd/horoyoi/";
+          window.location.href =  "/detector/index" ;
         }
       }else{
-        location.href = "https://products.suntory.co.jp/softdrink/"
+        window.location.href =  "/detector/index";
       }
       const box = detection.detection.box;
       const drawBox = new faceapi.draw.DrawBox(box, {
