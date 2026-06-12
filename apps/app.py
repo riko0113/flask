@@ -18,4 +18,8 @@ def create_app(config_key):
 
     app.register_blueprint(crud_views.crud, url_prefix="/crud")
 
+    from apps.detector import views as dt_views
+
+    app.register_blueprint(dt_views.dt)
+
     return app
