@@ -41,26 +41,19 @@ def create_user():
 
 @crud.route("/users/<user_id>", methods=["GET","POST"])
 def edit_user(user_id):
-<<<<<<< HEAD
-    form = UserForm()
-=======
     if int(user_id) != current_user.id:
         abort(403)
->>>>>>> 5c14cc7a134cabeec60045162f75567d3d28f4bf
 
     user = User.query.filter_by(id=user_id).first()
     if not user:
         abort(404)
 
-<<<<<<< HEAD
-=======
     form = UserForm()
 
     if request.method == "GET":
         form.username.data = user.username
         form.email.data = user.email
 
->>>>>>> 5c14cc7a134cabeec60045162f75567d3d28f4bf
     if form.validate_on_submit():
         user.username = form.email.data
         user.email = form.email.data
