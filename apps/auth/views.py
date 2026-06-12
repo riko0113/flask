@@ -7,4 +7,6 @@ auth = Blueprint(
     static_folder=""
 )
 
-@auth.route()
+@auth.route("/")
+def index():
+    return render_template("auth/index.html")
