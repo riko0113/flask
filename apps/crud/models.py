@@ -1,10 +1,11 @@
-from datetime import datetime, date
-from apps.app import db
-from werkzeug.security import generate_password_hash
-from sqlalchemy.orm import validates
+from datetime import datetime
+
+from apps.app import db, login_manager
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(db.Model):
+class User(db.Model, Usermixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -23,6 +24,12 @@ class User(db.Model):
     def password(self, password):
         self.password_hash = generate_password_hash(password)
 
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def is_duplicate_email(self):
+        return User.query.filter_by(email=self.email).first() is not None
+
     #生年月日が未来の日付ではないかチェック
     @validates('birthday')
     def validate_birthday(self, key, value):
@@ -37,3 +44,7 @@ class User(db.Model):
             return None
         today = date.today()
         return today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
