@@ -25,7 +25,7 @@ def create_app(config_key):
     login_manager.init_app(app)
 
     from apps.crud import views as crud_views
-    form apps.auth import views as auth_views
+    from apps.auth import views as auth_views
 
     app.register_blueprint(auth_views.auth, url_prefix="/auth")
     app.register_blueprint(crud_views.crud, url_prefix="/crud")
