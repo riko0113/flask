@@ -39,17 +39,10 @@ video.addEventListener("play", () => {
       //年齢、性別表現ボックス
       if(detection.age > 20){
         if(confirm("お酒のページに飛びます")){
-<<<<<<< HEAD
-          window.location.href =  "/detector/index" ;
+          location.href = url_for("detector.index");
         }
       }else{
-        window.location.href =  "/detector/index";
-=======
-          location.href = "/";
-        }
-      }else{
-        location.href = "/";
->>>>>>> 98944c50e477481a3e0c88ae9f77f4b9aeeee645
+        location.href = url_for("detector.index");
       }
       const box = detection.detection.box;
       const drawBox = new faceapi.draw.DrawBox(box, {

@@ -16,6 +16,12 @@
   <span style="color: red;">{{ error }}</span>
   {% endfor %}
   <p>
+  {{ form.birthday.label }} {{ form.birthday(placeholder="生年月日") }}
+  </p>
+  {% for error in form.birthday.errors %}
+  <span style="color: red;">{{ error }}</span>
+  {% endfor %}
+  <p>
   {{ form.email.label }} {{ form.email(placeholder="メールアドレス") }}
   </p>
   {% for error in form.email.errors %}
