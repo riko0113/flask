@@ -90,15 +90,15 @@ def verify_age():
     # 💡 【照合ロジック】誤差±5歳以内なら本人と判定
     age_difference = abs(camera_age - real_age)
     
-    if age_difference <= 5:
+    if age_difference <= 5 and real_age => 20:
         return jsonify({
             "status": "success", 
             "match": True, 
-            "redirect_url": "/detector/index"  # ★成功時の遷移先URL
+            "redirect_url": url_for("detector.index")  # ★成功時の遷移先URL
         })
-    else:
+    elif age_difference <= 5 and real_age < 20:
         return jsonify({
             "status": "success", 
             "match": False, 
-            "redirect_url": "/detector/index"   # ★失敗時の遷移先URL
+            "redirect_url": url_for("detector.index")   # ★失敗時の遷移先URL
         })
