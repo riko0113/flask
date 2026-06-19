@@ -5,7 +5,7 @@ from wtforms.fields.simple import SubmitField
 class UploadImageForm(FlaskForm):
     image = FileField(
         validators=[
-            FileRequired("おすすめのお酒の画像を入れてください♪")
+            FileRequired("おすすめのお酒の画像を入れてください♪"),
             FileAllowed(["png", "jpg", "jpeg"],
             "サポートされていない画像形式です。"),
         ]
