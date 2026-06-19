@@ -36,7 +36,7 @@ def create_user():
             db.session.add(user)
             db.session.commit()
 
-            return redirect(url_for("crud.users"))
+            return redirect(url_for("auth.login"))
 
         except ValueError as e:
             db.session.rollback()
