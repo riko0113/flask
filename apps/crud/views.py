@@ -1,3 +1,4 @@
+from apps.app import db
 from apps.crud.forms import UserForm
 from flask import Blueprint, render_template, redirect, url_for
 from flask import abort
@@ -11,10 +12,12 @@ crud= Blueprint(
 )
 
 @crud.route("/")
+@login_required
 def index():
     return render_template("crud/index.html")
 
 @crud.route("/users/new", methods=["GET","POST"])
+@login_required
 def create_user():
     form = UserForm()
 
@@ -40,6 +43,7 @@ def create_user():
     return render_template("crud/create.html", form=form)
 
 @crud.route("/users/<user_id>", methods=["GET","POST"])
+@login_required
 def edit_user(user_id):
     if int(user_id) != current_user.id:
         abort(403)
@@ -65,6 +69,7 @@ def edit_user(user_id):
     return render_template("crud/edit.html", user=user, form=form)
 
 @crud.route("/users/<user_id>/delete", methods=["POST"])
+@login_required
 def delete_user(user_id):
     user = User.query.fillter_by(id=user_id).first()
     db.session.delete(user)
