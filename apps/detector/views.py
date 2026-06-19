@@ -1,6 +1,5 @@
 import uuid
 from pathlib import Path
-from apps.app import SQLALCHEMY_DATABASE_URI
 from apps.app import db
 from apps.crud.models import User
 from apps.detector.models import UserImage
