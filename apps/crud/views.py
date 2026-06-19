@@ -2,7 +2,7 @@ from apps.app import db
 from apps.crud.models import User
 from apps.crud.forms import UserForm
 from apps.crud.models import User
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask import abort
 from flask_login import current_user, login_required
 
@@ -13,12 +13,9 @@ crud= Blueprint(
     static_folder="static",
 )
 
-@crud.route("/")
-@login_required
-def index():
-    return render_template("crud/index.html")
 
 @crud.route("/users/new", methods=["GET","POST"])
+@login_required
 def create_user():
     form = UserForm()
 
@@ -60,7 +57,7 @@ def edit_user(user_id):
         form.email.data = user.email
 
     if form.validate_on_submit():
-        user.username = form.email.data
+        user.username = form.username.data
         user.email = form.email.data
         user.password = form.password.data
         db.session.add(user)
