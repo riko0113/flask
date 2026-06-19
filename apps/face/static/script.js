@@ -1,21 +1,24 @@
 const video = document.getElementById("video");
 
 Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri("./models"),
-  faceapi.nets.faceLandmark68Net.loadFromUri("./models"),
-  faceapi.nets.faceRecognitionNet.loadFromUri("./models"),
-  faceapi.nets.faceExpressionNet.loadFromUri("./models"),
-  faceapi.nets.ageGenderNet.loadFromUri("./models"),
+  faceapi.nets.tinyFaceDetector.loadFromUri("static/models"),
+  faceapi.nets.faceLandmark68Net.loadFromUri("static/models"),
+  faceapi.nets.faceRecognitionNet.loadFromUri("static/models"),
+  faceapi.nets.faceExpressionNet.loadFromUri("static/models"),
+  faceapi.nets.ageGenderNet.loadFromUri("static/models"),
 ]).then(startVideo);
 
 function startVideo() {
+  console.log("startVideo実行");
+
   navigator.mediaDevices
     .getUserMedia({ video: true })
     .then(function (stream) {
+      console.log("カメラ取得成功");
       video.srcObject = stream;
     })
     .catch(function (err) {
-      console.error(err);
+      console.error("カメラエラー:", err);
     });
 }
 
@@ -80,7 +83,7 @@ function verifyAgeWithFlask(cameraAge) {
         location.href = data.redirect_url; // 成功ページへ遷移
       } else {
         alert("認証失敗：登録された年齢とカメラの認識年齢が一致しません。");
-        isRedirecting = false; // 💡 失敗した場合はロックを解除してカメラ認識を再開
+        location.href = data.redirect_url;// 💡 失敗した場合はロックを解除してカメラ認識を再開
       }
     } else {
       alert("エラー: " + data.message);
