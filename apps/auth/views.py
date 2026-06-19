@@ -30,7 +30,7 @@ def signup():
             return redirect(url_for("auth.signup"))
 
         db.session.add(user)
-        db.session.comit()
+        db.session.commit()
 
         login_user(user)
 
