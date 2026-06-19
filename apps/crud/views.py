@@ -16,6 +16,12 @@ crud= Blueprint(
 def index():
     return render_template("crud/index.html")
 
+@crud.route("/users")
+@login_required
+def users():
+    users = User.query.all()
+    return render_template("crud/index.html", users=users)
+
 @crud.route("/users/new", methods=["GET","POST"])
 @login_required
 def create_user():
