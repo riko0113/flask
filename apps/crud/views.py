@@ -1,4 +1,5 @@
 from apps.app import db
+from apps.crud.models import User
 from apps.crud.forms import UserForm
 from apps.crud.models import User
 from flask import Blueprint, render_template, redirect, url_for
@@ -26,9 +27,9 @@ def create_user():
 
         user = User(
             username=form.username.data,
+            birthday=form.birthday.data,
             email=form.email.data,
             password=form.password.data,
-            birthday=form.birthday.data,
         )
 
         try:
