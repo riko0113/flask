@@ -15,7 +15,6 @@ crud= Blueprint(
 
 
 @crud.route("/users/new", methods=["GET","POST"])
-@login_required
 def create_user():
     form = UserForm()
 
