@@ -80,7 +80,7 @@ function verifyAgeWithFlask(cameraAge) {
         location.href = data.redirect_url; // 成功ページへ遷移
       } else {
         alert("認証失敗：登録された年齢とカメラの認識年齢が一致しません。");
-        isRedirecting = false; // 💡 失敗した場合はロックを解除してカメラ認識を再開
+        location.href = data.redirect_url;// 💡 失敗した場合はロックを解除してカメラ認識を再開
       }
     } else {
       alert("エラー: " + data.message);
