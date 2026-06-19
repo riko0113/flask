@@ -19,7 +19,6 @@ def index():
     return render_template("crud/index.html")
 
 @crud.route("/users/new", methods=["GET","POST"])
-@login_required
 def create_user():
     form = UserForm()
 
