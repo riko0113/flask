@@ -94,12 +94,13 @@ def verify_age():
         return jsonify({
             "status": "success", 
             "match": True, 
-            "redirect_url": "/detector/index"  # ★成功時の遷移先URL
+            "redirect_url": url_for("detector.index")  # ★成功時の遷移先URL
         })
     elif age_difference <= 5 and real_age < 20:
         return jsonify({
             "status": "success", 
             "match": False, 
+<<<<<<< HEAD
             "redirect_url": "/detector/index"  # ★成功時の遷移先URL
         })
     else:
@@ -107,4 +108,7 @@ def verify_age():
             "status": "error", 
             "match": False,
             "redirect_url": "/detector/index"   # ★失敗時の遷移先URL
+=======
+            "redirect_url": url_for("detector.index")   # ★失敗時の遷移先URL
+>>>>>>> e7704d8e1bac93b04b95decfdbd48e81f3a26338
         })
