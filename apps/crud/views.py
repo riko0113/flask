@@ -1,7 +1,8 @@
 from apps.app import db
 from apps.crud.models import User
 from apps.crud.forms import UserForm
-from flask import Blueprint, render_template, redirect, url_for
+from apps.crud.models import User
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask import abort
 from flask_login import current_user, login_required
 
@@ -12,11 +13,9 @@ crud= Blueprint(
     static_folder="static",
 )
 
-@crud.route("/")
-def index():
-    return render_template("crud/index.html")
 
 @crud.route("/users/new", methods=["GET","POST"])
+@login_required
 def create_user():
     form = UserForm()
 
@@ -33,7 +32,7 @@ def create_user():
             db.session.add(user)
             db.session.commit()
 
-            return redirect(url_for("crud.users"))
+            return redirect(url_for("auth.login"))
 
         except ValueError as e:
             db.session.rollback()
@@ -42,6 +41,7 @@ def create_user():
     return render_template("crud/create.html", form=form)
 
 @crud.route("/users/<user_id>", methods=["GET","POST"])
+@login_required
 def edit_user(user_id):
     if int(user_id) != current_user.id:
         abort(403)
@@ -57,7 +57,7 @@ def edit_user(user_id):
         form.email.data = user.email
 
     if form.validate_on_submit():
-        user.username = form.email.data
+        user.username = form.username.data
         user.email = form.email.data
         user.password = form.password.data
         db.session.add(user)
@@ -67,8 +67,38 @@ def edit_user(user_id):
     return render_template("crud/edit.html", user=user, form=form)
 
 @crud.route("/users/<user_id>/delete", methods=["POST"])
+@login_required
 def delete_user(user_id):
-    user = User.query.fillter_by(id=user_id).first()
+    user = User.query.filter_by(id=user_id).first()
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for("crud.users"))
+
+@crud.route("/verify_age", methods=["POST"])
+@login_required
+def verify_age():
+    data = request.get_json()
+    if not data or "camera_age" not in data:
+        return jsonify({"status": "error", "message": "データが不足しています"}), 400
+
+    camera_age = round(data["camera_age"])  # カメラが予測した年齢
+    real_age = current_user.age             # 💡 あなたが作ったモデルの age プロパティを利用！
+
+    if real_age is None:
+        return jsonify({"status": "error", "message": "誕生日が登録されていません"}), 400
+
+    # 💡 【照合ロジック】誤差±5歳以内なら本人と判定
+    age_difference = abs(camera_age - real_age)
+    
+    if age_difference <= 5:
+        return jsonify({
+            "status": "success", 
+            "match": True, 
+            "redirect_url": "/detector/success"  # ★成功時の遷移先URL
+        })
+    else:
+        return jsonify({
+            "status": "success", 
+            "match": False, 
+            "redirect_url": "/detector/failed"   # ★失敗時の遷移先URL
+        })

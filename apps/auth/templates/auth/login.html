@@ -21,4 +21,5 @@
   {% endfor %}
   <p>{{ form.submit() }}</p>
 </form>
+<button type="button" onclick="location.href='{{url_for('crud.create_user')}}'">新規登録</button>
 {% endblock %}

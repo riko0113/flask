@@ -30,7 +30,7 @@ def signup():
             return redirect(url_for("auth.signup"))
 
         db.session.add(user)
-        db.session.comit()
+        db.session.commit()
 
         login_user(user)
 
@@ -49,7 +49,7 @@ def login():
 
         if user is not None and user.verify_password(form.password.data):
             login_user(user)
-            return redirect(url_for("crud.users"))
+            return redirect(url_for("face.index"))
         
         flash("メールアドレスかパスワードが不正です")
     return render_template("auth/login.html", form=form)

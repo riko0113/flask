@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <script defer src="face-api.min.js"></script>
-    <script defer src="script.js"></script>
+    <script defer src="{{ url_for('face.static', filename='face-api.min.js') }}"></script>
+    <script defer src="{{ url_for('face.static', filename='script.js') }}"></script>
+    <script>
+      const DETECTOR_URL = "{{ url_for('detector.index') }}";
+    </script>
     <style>
         /* 1. 画面全体の背景をダークモードにして、要素を画面のド真ん中に寄せる */
 body {
@@ -65,7 +68,8 @@ body {
           編集
       </a>
       <video id="video" width="720" height="560" autoplay muted></video>
-    </div> </div>
+    </div> 
+  </div>
 </body>
 </html>
 
