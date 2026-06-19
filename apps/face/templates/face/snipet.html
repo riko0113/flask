@@ -9,8 +9,8 @@
     <script>
       const DETECTOR_URL = "{{ url_for('detector.index') }}";
     </script>
-    <script defer src="{{ url_for('face.static', filename='face-api.min.js') }}"></script>
-    <script defer src="{{ url_for('face.static', filename='script.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='face-api.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
     <style>
         /* 1. 画面全体の背景をダークモードにして、要素を画面のド真ん中に寄せる */
 body {
