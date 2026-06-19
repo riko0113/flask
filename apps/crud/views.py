@@ -15,7 +15,6 @@ crud= Blueprint(
 
 
 @crud.route("/users/new", methods=["GET","POST"])
-@login_required
 def create_user():
     form = UserForm()
 
@@ -90,7 +89,7 @@ def verify_age():
     # 💡 【照合ロジック】誤差±5歳以内なら本人と判定
     age_difference = abs(camera_age - real_age)
     
-    if age_difference <= 5 and real_age => 20:
+    if age_difference <= 5 and real_age >= 20:
         return jsonify({
             "status": "success", 
             "match": True, 
