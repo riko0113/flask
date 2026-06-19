@@ -10,6 +10,7 @@ face= Blueprint(
     "face",
     __name__,
     template_folder="templates",
+    static_folder="static",
 )
 
 @face.route("/")
