@@ -13,7 +13,7 @@ face= Blueprint(
     static_folder="static",
 )
 
-@crud.route("/")
+@face.route("/")
 @login_required
 def index():
     return render_template("face/snipet.html")
