@@ -29,10 +29,12 @@ def create_app(config_key):
     from apps.crud import views as crud_views
     from apps.auth import views as auth_views
     from apps.face import views as face_views
+    from apps.detector import views as detector_views
 
     app.register_blueprint(auth_views.auth, url_prefix="/auth")
     app.register_blueprint(crud_views.crud, url_prefix="/crud")
     app.register_blueprint(face_views.face, url_prefix="/face")
+    app.register_blueprint(detector_views.detector, url_prefix="/detector")
 
     @app.route("/")
     def home():

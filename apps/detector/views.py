@@ -1,6 +1,5 @@
 import uuid
 from pathlib import Path
-from apps.app import SQLALCHEMY_DATABASE_URI
 from apps.app import db
 from apps.crud.models import User
 from apps.detector.models import UserImage
@@ -16,9 +15,9 @@ from flask import (
 from flask_login import current_user, login_required
 
 
-dt = Blueprint("detector", __name__, template_folder="templates")
+detector = Blueprint("detector", __name__, template_folder="templates")
 
-@dt.route("/")
+@detector.route("/")
 def index():
     user_images = (
         db.session.query(User, UserImage)
@@ -29,11 +28,11 @@ def index():
 
     return render_template("detector/index.html", user_images=user_images)
 
-@dt.route("/images/<path:filename>")
+@detector.route("/images/<path:filename>")
 def image_file(filename):
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], filename)
 
-@dt.route("/upload", methods=["GET", "POST"])
+@detector.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload_image():
     form = UploadImageForm()
