@@ -37,7 +37,7 @@ def create_user():
             db.session.rollback()
             form.birthday.errors.append(str(e))
 
-    return render_template("crud/create.html, form=form")
+    return render_template("crud/create.html", form=form)
 
 @crud.route("/users/<user_id>", methods=["GET","POST"])
 def edit_user(user_id):
