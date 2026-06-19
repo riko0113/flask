@@ -15,7 +15,6 @@ crud= Blueprint(
 
 
 @crud.route("/users/new", methods=["GET","POST"])
-@login_required
 def create_user():
     form = UserForm()
 
@@ -100,5 +99,11 @@ def verify_age():
         return jsonify({
             "status": "success", 
             "match": False, 
-            "redirect_url": url_for("detector.index")   # ★失敗時の遷移先URL
+            "redirect_url": "/detector/index"  # ★成功時の遷移先URL
+        })
+    else:
+        return jsonify({
+            "status": "error", 
+            "match": False,
+            "redirect_url": "/detector/index"   # ★失敗時の遷移先URL
         })
