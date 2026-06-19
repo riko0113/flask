@@ -1,12 +1,11 @@
 const video = document.getElementById("video");
-const MODEL_URL = "/face/static/models";
 
 Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL), //カメラの中の顔を探すmodule
-  faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL), //目、鼻、口を探すmodule
-  faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL), //顔付きボックス
-  faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL), //表情を判断するmodule
-  faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL), //年齢性別を判断するmodule
+  faceapi.nets.tinyFaceDetector.loadFromUri("./models"),
+  faceapi.nets.faceLandmark68Net.loadFromUri("./models"),
+  faceapi.nets.faceRecognitionNet.loadFromUri("./models"),
+  faceapi.nets.faceExpressionNet.loadFromUri("./models"),
+  faceapi.nets.ageGenderNet.loadFromUri("./models"),
 ]).then(startVideo);
 
 function startVideo() {
@@ -20,43 +19,76 @@ function startVideo() {
     });
 }
 
-let canvas;
+// 💡 ページ移動中や通信中に、何回もダイアログが重複して出るのを防ぐロックフラグ
+let isRedirecting = false;
+
 video.addEventListener("play", () => {
-  if (!canvas) {
-    const canvas = faceapi.createCanvasFromMedia(video);
-    document.body.append(canvas);
-  }
+  const canvas = faceapi.createCanvasFromMedia(video);
+  document.body.append(canvas);
   const displaySize = { width: video.width, height: video.height };
   faceapi.matchDimensions(canvas, displaySize);
-  setInterval(async () => {
-    const detections = await faceapi
-      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()) //カメラの中にいる顔をすべて認識
-      .withFaceLandmarks() //目、鼻、口を探す
-      .withFaceExpressions() ////表情を判断する
-      .withAgeAndGender(); //年齢性別を判断する
-    const resizedDetections = faceapi.resizeResults(detections, displaySize);
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height); //顔に付いて回るボックス
-    faceapi.draw.drawDetections(canvas, resizedDetections); //顔に箱付きの表現
-    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections); //目鼻口点線表現
-    faceapi.draw.drawFaceExpressions(canvas, resizedDetections); //感情情報表現
-    resizedDetections.forEach((detection) => {
-      if (redirected) return; 
-      //年齢、性別表現ボックス
-      if(detection.age > 20){
-        redirected = true;
 
-        if(confirm("お酒のページに飛びます")){
-          location.href = DETECTOR_URL;
-        }
+  setInterval(async () => {
+    // すでにリダイレクト・通信処理中なら、以降の顔認識をスキップ
+    if (isRedirecting) return;
+
+    const detections = await faceapi
+      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceExpressions()
+      .withAgeAndGender();
+
+    const resizedDetections = faceapi.resizeResults(detections, displaySize);
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    faceapi.draw.drawDetections(canvas, resizedDetections);
+    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+    faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+
+    resizedDetections.forEach((detection) => {
+      const cameraAge = Math.round(detection.age);
+
+      if (!isRedirecting) {
+        isRedirecting = true; // 💡 即座にロックをかける（連打防止）
+        
+        // Python側の年齢照合APIを呼び出す
+        verifyAgeWithFlask(cameraAge);
       }
+
       const box = detection.detection.box;
       const drawBox = new faceapi.draw.DrawBox(box, {
-        label: Math.round(detection.age) + " year old " + detection.gender,
-        
+        label: cameraAge + " year old " + detection.gender,
       });
       drawBox.draw(canvas);
     });
   }, 100);
-  
 });
 
+// 💡 JavaScriptからFlaskのAPIへ年齢を送信し、結果をもらう関数
+function verifyAgeWithFlask(cameraAge) {
+  fetch('/crud/verify_age', {  // Blueprintのルーティングパス
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ camera_age: cameraAge })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === "success") {
+      if (data.match) {
+        alert("顔認証成功！登録年齢と一致しました。");
+        location.href = data.redirect_url; // 成功ページへ遷移
+      } else {
+        alert("認証失敗：登録された年齢とカメラの認識年齢が一致しません。");
+        isRedirecting = false; // 💡 失敗した場合はロックを解除してカメラ認識を再開
+      }
+    } else {
+      alert("エラー: " + data.message);
+      isRedirecting = false;
+    }
+  })
+  .catch((error) => {
+    console.error('通信エラー:', error);
+    isRedirecting = false;
+  });
+}

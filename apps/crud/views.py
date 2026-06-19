@@ -69,7 +69,36 @@ def edit_user(user_id):
 @crud.route("/users/<user_id>/delete", methods=["POST"])
 @login_required
 def delete_user(user_id):
-    user = User.query.fillter_by(id=user_id).first()
+    user = User.query.filter_by(id=user_id).first()
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for("crud.users"))
+
+@crud.route("/verify_age", methods=["POST"])
+@login_required
+def verify_age():
+    data = request.get_json()
+    if not data or "camera_age" not in data:
+        return jsonify({"status": "error", "message": "データが不足しています"}), 400
+
+    camera_age = round(data["camera_age"])  # カメラが予測した年齢
+    real_age = current_user.age             # 💡 あなたが作ったモデルの age プロパティを利用！
+
+    if real_age is None:
+        return jsonify({"status": "error", "message": "誕生日が登録されていません"}), 400
+
+    # 💡 【照合ロジック】誤差±5歳以内なら本人と判定
+    age_difference = abs(camera_age - real_age)
+    
+    if age_difference <= 5:
+        return jsonify({
+            "status": "success", 
+            "match": True, 
+            "redirect_url": "/detector/index"  # ★成功時の遷移先URL
+        })
+    else:
+        return jsonify({
+            "status": "success", 
+            "match": False, 
+            "redirect_url": "/detector/index"   # ★失敗時の遷移先URL
+        })
