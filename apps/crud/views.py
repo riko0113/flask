@@ -1,5 +1,6 @@
 from apps.app import db
 from apps.crud.forms import UserForm
+from apps.crud.models import User
 from flask import Blueprint, render_template, redirect, url_for
 from flask import abort
 from flask_login import current_user, login_required
@@ -15,12 +16,6 @@ crud= Blueprint(
 @login_required
 def index():
     return render_template("crud/index.html")
-
-@crud.route("/users")
-@login_required
-def users():
-    users = User.query.all()
-    return render_template("crud/index.html", users=users)
 
 @crud.route("/users/new", methods=["GET","POST"])
 @login_required
