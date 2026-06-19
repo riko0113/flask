@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from apps.config import config
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
+from flask import redirect, url_for
+
 
 csrf = CSRFProtect()
 db = SQLAlchemy()
@@ -31,5 +33,9 @@ def create_app(config_key):
     app.register_blueprint(auth_views.auth, url_prefix="/auth")
     app.register_blueprint(crud_views.crud, url_prefix="/crud")
     app.register_blueprint(face_views.face, url_prefix="/face")
+
+    @app.route("/")
+    def home():
+        return redirect(url_for("auth.login"))
 
     return app
