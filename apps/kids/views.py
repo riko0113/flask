@@ -6,7 +6,7 @@ from flask import Blueprint, render_template
 #あああ
 
 dt = Blueprint(
-    "Kids",
+    "kids",
     __name__,
     template_folder="templates",
 )
