@@ -3,7 +3,7 @@ from pathlib import Path
 from apps.app import db
 from apps.crud.models import User
 from apps.detector.models import UserImage
-from apps.detector.forms import UploadImageForm
+from apps.detector.forms import UploadImageForm, DeleteForm
 from flask import (
     Blueprint,
     current_app,
@@ -25,8 +25,24 @@ def index():
         .filter(User.id == UserImage.user_id)
         .all()
     )
-
-    return render_template("detector/index.html", user_images=user_images)
+    
+    user_image_tag_dict = {}
+    for user_image in user_images:
+        user_image_tags = (
+            db.session.query(UserImageTag)
+            .fileter(UserImageTag.user_image_id == user_image.UserImage.id)
+            .all()
+        )
+        user_image_tag_dict[user_image.UserImage.id] = user_image_tags
+    
+    delete_form = DeleteForm()
+ 
+    return render_template(
+        "detector/index.html",
+        user_images=user_images,
+        user_image_tag_dict=user_image_tag_dict,
+        delete_form=delete_form
+    )
 
 @detector.route("/images/<path:filename>")
 def image_file(filename):
@@ -47,10 +63,29 @@ def upload_image():
         file.save(image_path)
 
         user_image = UserImage(
-            user_id=current_user.id, image_path=image_uuid_file_name
+            user_id=current_user.id,
+            image_path=image_uuid_file_name,
+            genre=form.genre.data,
+            comment=form.comment.data,
         )
         db.session.add(user_image)
         db.session.commit()
 
         return redirect(url_for("detector.index"))
     return render_template("detector/upload.html", form=form)
+
+@dt.route("/images/delete/<string:image_id>", methods=["POST"])
+@login_required
+def delete_image(image_id):
+    try:
+        db.session.query(UserImageTag).fileter(
+            UserImageTag.user_image_id == image_id
+        ).delete()
+        db.session.query(UserImage).fileter(UserImage.id == image_id).delete()
+        db.session.commit()
+    except SQLAlchemyError as e:
+        flash("投稿削除処理でエラーが発生しました。")
+        current_app.logger.error(e)
+        db.session.rollback()
+    
+    return redirect(url_for("detector.index"))
