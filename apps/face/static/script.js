@@ -22,53 +22,80 @@ function startVideo() {
     });
 }
 
-// 💡 ページ移動中や通信中に、何回もダイアログが重複して出るのを防ぐロックフラグ
 let isRedirecting = false;
 
-video.addEventListener("play", () => {
-  const canvas = faceapi.createCanvasFromMedia(video);
-  document.body.append(canvas);
-  const displaySize = { width: video.width, height: video.height };
-  faceapi.matchDimensions(canvas, displaySize);
+video.addEventListener("playing", () => {
+  let canvas = document.querySelector("canvas");
+  if (!canvas) {
+    canvas = faceapi.createCanvasFromMedia(video);
+    const wrapper = document.querySelector(".video-wrapper");
+    if (wrapper) {
+      wrapper.append(canvas);
+    } else {
+      document.body.append(canvas);
+    }
+  }
 
-  setInterval(async () => {
-    // すでにリダイレクト・通信処理中なら、以降の顔認識をスキップ
-    if (isRedirecting) return;
+  setTimeout(() => {
+    const displaySize = { width: video.clientWidth, height: video.clientHeight };
+    faceapi.matchDimensions(canvas, displaySize);
 
-    const detections = await faceapi
-      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceExpressions()
-      .withAgeAndGender();
-
-    const resizedDetections = faceapi.resizeResults(detections, displaySize);
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    faceapi.draw.drawDetections(canvas, resizedDetections);
-    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-    faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-
-    resizedDetections.forEach((detection) => {
-      const cameraAge = Math.round(detection.age);
-
-      if (!isRedirecting) {
-        isRedirecting = true; // 💡 即座にロックをかける（連打防止）
-        
-        // Python側の年齢照合APIを呼び出す
-        verifyAgeWithFlask(cameraAge);
+    const timerId = setInterval(async () => {
+      if (isRedirecting) {
+        clearInterval(timerId);
+        return;
       }
 
-      const box = detection.detection.box;
-      const drawBox = new faceapi.draw.DrawBox(box, {
-        label: cameraAge + " year old " + detection.gender,
+      const detections = await faceapi
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions()
+        .withAgeAndGender();
+
+      const resizedDetections = faceapi.resizeResults(detections, displaySize);
+      const ctx = canvas.getContext("2d");
+      
+      // キャンバスをクリア
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 💡 【超重要】文字を反転させずに、描画位置だけを鏡写しにする魔法の処理
+      ctx.save();
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+
+      // 反転した状態の座標系で枠や点を描画する
+      faceapi.draw.drawDetections(canvas, resizedDetections);
+      faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+      
+      // 元の座標系に戻してから文字を描画（これで文字の反転を防ぐ！）
+      ctx.restore();
+
+      resizedDetections.forEach((detection) => {
+        const cameraAge = Math.round(detection.age);
+
+        if (!isRedirecting) {
+          isRedirecting = true;
+          verifyAgeWithFlask(cameraAge);
+        }
+
+        // 文字だけは反転させないために、手動で反転後の位置を計算して描く
+        const box = detection.detection.box;
+        // 鏡写しの世界でのX座標を計算
+        const flippedX = canvas.width - box.x - box.width;
+
+        const drawBox = new faceapi.draw.DrawBox(
+          { x: flippedX, y: box.y, width: box.width, height: box.height },
+          { label: cameraAge + " year old " + detection.gender }
+        );
+        drawBox.draw(canvas);
       });
-      drawBox.draw(canvas);
-    });
+      
+    }, 100);
   }, 100);
 });
 
-// 💡 JavaScriptからFlaskのAPIへ年齢を送信し、結果をもらう関数
 function verifyAgeWithFlask(cameraAge) {
-  fetch('/crud/verify_age', {  // Blueprintのルーティングパス
+  fetch('/crud/verify_age', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -79,11 +106,11 @@ function verifyAgeWithFlask(cameraAge) {
   .then(data => {
     if (data.status === "success") {
       if (data.match) {
-        alert("顔認証成功！20歳以上で登録年齢と一致しました。");
-        location.href = data.redirect_url; // 大人ページへ遷移
+        alert("顔認証成功！登録年齢と一致しました。");
+        location.href = data.redirect_url;
       } else {
-        alert("顔認証成功！20歳未満で登録年齢と一致しました。20未満");
-        location.href = data.redirect_url;// 　子供ページへ遷移
+        alert("認証失敗：登録された年齢とカメラの認識年齢が一致しません。");
+        location.href = data.redirect_url;
       }
     } else {
       alert("エラー: " + data.message);
