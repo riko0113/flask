@@ -11,7 +11,7 @@ kids = Blueprint(
     template_folder="templates",
 )
 
-@dt.route("/")
+@kids.route("/")
 def index():
     user_images= (
 
