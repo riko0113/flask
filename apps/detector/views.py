@@ -3,7 +3,7 @@ from pathlib import Path
 from apps.app import db
 from apps.crud.models import User
 from apps.detector.models import UserImage
-from apps.detector.forms import UploadImageForm
+from apps.detector.forms import UploadImageForm, DeleteForm
 from flask import (
     Blueprint,
     current_app,
@@ -18,15 +18,22 @@ from flask_login import current_user, login_required
 detector = Blueprint("detector", __name__, template_folder="templates")
 
 @detector.route("/")
+@login_required
 def index():
     user_images = (
         db.session.query(User, UserImage)
-        .join(UserImage)
-        .filter(User.id == UserImage.user_id)
+        .join(UserImage, User.id == UserImage.user_id)
+        .filter(User.id == current_user.id)
         .all()
     )
 
-    return render_template("detector/index.html", user_images=user_images)
+    delete_form = DeleteForm()
+
+    return render_template(
+        "detector/index.html",
+        user_images=user_images,
+        delete_form=delete_form
+    )
 
 @detector.route("/images/<path:filename>")
 def image_file(filename):
@@ -57,3 +64,16 @@ def upload_image():
 
         return redirect(url_for("detector.index"))
     return render_template("detector/upload.html", form=form)
+
+@detector.route("/delete/<int:image_id>", methods=["POST"])
+@login_required
+def delete_image(image_id):
+    image = UserImage.query.get_or_404(image_id)
+
+    if str(image.user_id) != str(current_user.id):
+        return redirect(url_for("detector.index"))
+
+    db.session.delete(image)
+    db.session.commit()
+
+    return redirect(url_for("detector.index"))
