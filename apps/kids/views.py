@@ -5,7 +5,7 @@ from apps.kids.models import KidsImage
 from flask import Blueprint, render_template
 #あああ
 
-dt = Blueprint(
+kids = Blueprint(
     "kids",
     __name__,
     template_folder="templates",
