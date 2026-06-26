@@ -14,15 +14,10 @@ dt = Blueprint(
 @dt.route("/")
 def index():
     user_images= (
-<<<<<<< HEAD
-        db.session.query(User, UserImage)
-        .join(UserImage)
-        .filter(User.id == UserImage.user_id)
-=======
+
         db.session.query(User, KidsImage)
         .join(KidsImage)
         .filter(User.id == KidsImage.user_id)
->>>>>>> 913597f45fa8709d12565f0ea017fff4112d83ee
         .all()
     )
     return render_template("Kids/index.html", user_images=user_images)
