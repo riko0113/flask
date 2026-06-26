@@ -3,6 +3,7 @@
 <div>
     <h4>画像新規登録</h4>
     <p>アップロードするお酒の画像をえらんでください♪</p>
+    <p>ジャンルを選択し、コメントも入力してください♬</p>
     <form
         action="{{ url_for('detector.upload_image') }}"
         method="post"
@@ -16,6 +17,22 @@
             </label>
         </div>
         {% for error in form.image.errors %}
+        <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+        <div>
+            <label>
+                <span> {{ form.genre(class="form-select") }} </span>
+            </label>
+        </div>
+        {% for error in form.genre.errors %}
+        <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+        <div>
+            <label>
+                <span> {{ form.comment(class="form-control", rows="4") }} </span>
+            </label>
+        </div>
+        {% for error in form.comment.errors %}
         <span style="color:red;">{{ error }}</span>
         {% endfor %}
         <hr />
