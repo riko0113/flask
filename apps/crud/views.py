@@ -105,5 +105,6 @@ def verify_age():
         return jsonify({
             "status": "error", 
             "match": False,
+            "message": "年齢の認証に失敗しました。再試行してください。",
             "redirect_url": "/detector/index"   # ★失敗時の遷移先URL
         })
