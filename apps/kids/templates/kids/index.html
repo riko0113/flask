@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "kids/base.html" %}
 {% block content %}
 
@@ -5,3 +6,30 @@
 <h3>kids</h3>
 
 {% endblock %}
+=======
+{% extends "kids/base.html"%}
+{% block content %}
+<h3>kidsのみんな</h3>
+<div class ="col-md-10 text-right dt-image-register-btn">
+    <a href ="{{ url_for('kids.upload_image')}}" class= "btn btn-primary">
+        画像新規登録
+    </a>
+</div>
+
+{% for user_image in user_images %}
+<div class="card col-mb-7 dt-image-content">
+    <header class ="d-flex justify-content-">
+        <div class ="dt-image-username">{{ user.username}}</div>
+    </header>
+    <section>
+        <img src = "{{url_for('detector.image_file',filename = image.image_path) }}
+        " alt = "アップロード画像"
+        />
+        <p>ジャンル：{{ image.genre }}</p>
+        <p>コメント：{{ image.comment }}</p>
+    </section>
+</div>
+{% endfor %}
+{% endblock %}
+        
+>>>>>>> 46048d947e883744eac7d794c744ce0928121afe
