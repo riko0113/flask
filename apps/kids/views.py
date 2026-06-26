@@ -1,7 +1,7 @@
 from apps.app import db
 from apps.crud.models import User
 
-from apps.Kids.models import KidsImage
+from apps.kids.models import KidsImage
 from flask import Blueprint, render_template
 #あああ
 
