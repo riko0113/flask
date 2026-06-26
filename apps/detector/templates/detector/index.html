@@ -12,10 +12,22 @@
 <div class ="card col-md-7 image-content-between">
     <header class ="d-flex justify-content-">
         <div class ="dt-image-username">{{ user.username}}</div>
+        <form
+          action="{{ url_for('detector.delete_image', image_id=image.id) }}"
+          method="POST"
+        >
+        {{ delete_form.csrf_token }}
+
+        {% if current_user.id == user.id %}
+          {{ delete_form.submit(class="btn btn-danger btn-sm") }}
+        {% else %}
+          {{ delete_form.submit(class="btn btn-danger btn-sm", disabled=True) }}
+        {% endif %}
+        </form>
     </header>
     <section>
-        <img src = "{{url_for('detector.image_file',filename = image.image_path) }}
-        " alt = "アップロード画像"
+        <img src = "{{url_for('detector.image_file',filename = image.image_path) }}"
+             alt = "アップロード画像"
         />
         <p>ジャンル：{{ image.genre }}</p>
         <p>コメント：{{ image.comment }}</p>
