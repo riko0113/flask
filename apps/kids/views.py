@@ -1,14 +1,10 @@
 from apps.app import db
 from apps.crud.models import User
-<<<<<<< HEAD
-from apps.Kids.models import UserImage
-from flask import Blueprint, render_template
 
-=======
 from apps.Kids.models import KidsImage
 from flask import Blueprint, render_template
 #あああ
->>>>>>> 913597f45fa8709d12565f0ea017fff4112d83ee
+
 dt = Blueprint(
     "Kids",
     __name__,
