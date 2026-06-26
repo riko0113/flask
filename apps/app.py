@@ -36,7 +36,7 @@ def create_app(config_key):
     app.register_blueprint(crud_views.crud, url_prefix="/crud")
     app.register_blueprint(face_views.face, url_prefix="/face")
     app.register_blueprint(detector_views.detector, url_prefix="/detector")
-    app.register_blueprint(kids_views.detector,url_prefix="/kids")
+    app.register_blueprint(kids_views.kids,url_prefix="/kids")
 
     @app.route("/")
     def home():
