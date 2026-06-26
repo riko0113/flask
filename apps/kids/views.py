@@ -17,6 +17,7 @@ from flask_login import current_user, login_required
 
 kids= Blueprint("kids", __name__, template_folder="templates")
 
+@kids.route("/")
 def index():
     user_images= (
 
