@@ -79,11 +79,11 @@ function verifyAgeWithFlask(cameraAge) {
   .then(data => {
     if (data.status === "success") {
       if (data.match) {
-        alert("顔認証成功！登録年齢と一致しました。");
-        location.href = data.redirect_url; // 成功ページへ遷移
+        alert("顔認証成功！20歳以上で登録年齢と一致しました。");
+        location.href = data.redirect_url; // 大人ページへ遷移
       } else {
-        alert("認証失敗：登録された年齢とカメラの認識年齢が一致しません。");
-        location.href = data.redirect_url;// 💡 失敗した場合はロックを解除してカメラ認識を再開
+        alert("顔認証成功！20歳未満で登録年齢と一致しました。20未満");
+        location.href = data.redirect_url;// 　子供ページへ遷移
       }
     } else {
       alert("エラー: " + data.message);

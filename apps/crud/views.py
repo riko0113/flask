@@ -103,7 +103,6 @@ def verify_age():
         })
     else:
         return jsonify({
-            "status": "error", 
-            "match": False,
+            "status": "error",
             "message": "年齢の認証に失敗しました。再試行してください。"
         })
