@@ -28,9 +28,19 @@
   {% endfor %}
   <p><input type="submit" value="更新" /></p>
 </form>
-<form action="{{ url_for('detector.account', user_id=user.id) }}" method="GET">
+<div>
+  {% if request.args.get('mode') == 'kids' %}
+    <form action="{{ url_for('kids.account', user_id=user.id) }}" method="GET">
+    {{ form.csrf_token }}
     <input type="submit" value="戻る" />
-</form>
+    </form>
+  {% else %}
+    <form action="{{ url_for('detector.account', user_id=user.id) }}" method="GET" >
+    {{ form.csrf_token }}
+    <input type="submit" value="戻る" />
+    </form>
+  {% endif %}
+</div>
 <form action="{{ url_for('crud.delete_user', user_id=user.id) }}" method="POST">
     {{ form.csrf_token }}
     <input type="submit" value="削除" />
