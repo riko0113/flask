@@ -99,7 +99,7 @@ def edit_image(image_id):
     image = UserImage.query.get_or_404(image_id)
 
     # 自分の投稿だけ編集可能
-    if image.user_id != current_user.id:
+    if int(image.user_id) != int(current_user.id):
         return redirect(url_for("detector.index"))
     form = EditForm(obj=image)
 
