@@ -73,6 +73,40 @@ def edit_user(user_id):
     # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
     return render_template("crud/edit.html", user=user, form=form)
 
+@crud.route("/users/<user_id>", methods=["GET","POST"])
+@login_required
+def edit_user2(user_id):
+    if int(user_id) != current_user.id:
+        abort(403)
+
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        abort(404)
+
+    form = UserForm()
+
+    if request.method == "GET":
+        form.username.data = user.username
+        form.email.data = user.email
+
+    # POSTのときだけ処理を行う
+    if request.method == "POST":
+        # CSRF以外のバリデーション（文字数などの入力チェック）を実行
+        if form.validate():
+            user.username = form.username.data
+            user.email = form.email.data
+
+            if form.password.data:
+                user.password = form.password.data 
+                
+            db.session.add(user)
+            db.session.commit()
+            
+            return redirect(url_for("kids.account", user_id=current_user.id))
+    
+    # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
+    return render_template("crud/edit.html", user=user, form=form)
+
 @crud.route("/users/<user_id>/delete", methods=["POST"])
 @login_required
 def delete_user(user_id):
