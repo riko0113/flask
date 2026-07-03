@@ -9,6 +9,8 @@ class KidsImage(db.Model):
     image_path = db.Column(db.String)
     is_detected = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
+    genre = db.Column(db.String(50))
+    comment = db.Column(db.Text)
     updated_at = db.Column(
         db.DateTime, default=datetime.now, onupdate=datetime.now
     )

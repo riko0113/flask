@@ -1,17 +1,41 @@
-from flask_wtf.file import FileAllowed,FileField,FileRequired
-from flask_wtf.form import FlaskForm
-from wtforms.fields.simple import SubmitField
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileField, FileRequired
+
+from wtforms import SelectField, TextAreaField, SubmitField
+from wtforms.validators import DataRequired
+
 
 class UplodImageForm(FlaskForm):
+
     image = FileField(
+        "画像",
         validators=[
             FileRequired("画像ファイルを指定してください。"),
-            FileAllowed(["png","jpg","jpeg"],
-            "サポートされていない画像形式です。"),
+            FileAllowed(
+                ["png", "jpg", "jpeg"],
+                "サポートされていない画像形式です。"
+            ),
         ]
     )
 
+    genre = SelectField(
+        "ジャンル",
+        choices=[
+            ("animal", "動物"),
+            ("food", "食べ物"),
+            ("game", "ゲーム"),
+            ("other", "その他"),
+        ],
+        validators=[DataRequired()]
+    )
+
+    comment = TextAreaField(
+        "コメント",
+        validators=[DataRequired()]
+    )
+
     submit = SubmitField("アップロード")
+
 
 class DeleteForm(FlaskForm):
     submit = SubmitField("削除")
