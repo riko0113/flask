@@ -1,7 +1,7 @@
 {% extends "detector/base.html" %}
 {% block content %}
 
-<a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" >
+<a href="{{ url_for('crud.edit_user', user_id=current_user.id, model='adult') }}" >
     登録情報の編集
 </a>
 <div class="dt-user-posts-header">

@@ -51,6 +51,8 @@ def edit_user(user_id):
 
     form = UserForm()
 
+    mode = request.args.get("mode", "adult")
+    
     if request.method == "GET":
         form.username.data = user.username
         form.email.data = user.email
@@ -68,7 +70,10 @@ def edit_user(user_id):
             db.session.add(user)
             db.session.commit()
             
-            return redirect(url_for("detector.account", user_id=current_user.id))
+            if mode == "kids":
+                return redirect(url_for("kids.account", user_id=current_user.id))
+            else:
+                return redirect(url_for("detector.account", user_id=current_user.id))
     
     # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
     return render_template("crud/edit.html", user=user, form=form)
