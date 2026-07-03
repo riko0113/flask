@@ -39,7 +39,7 @@ def create_user():
 
     return render_template("crud/create.html", form=form)
 
-@crud.route("/users/<user_id>", methods=["GET","POST"])
+@crud.route("/users/<user_id>/edit", methods=["GET","POST"])
 @login_required
 def edit_user(user_id):
     if int(user_id) != current_user.id:
@@ -73,9 +73,9 @@ def edit_user(user_id):
     # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
     return render_template("crud/edit.html", user=user, form=form)
 
-@crud.route("/users/<user_id>", methods=["GET","POST"])
+@crud.route("/users/<user_id>/edit_kids", methods=["GET","POST"])
 @login_required
-def edit_user2(user_id):
+def edit_user_kids(user_id):
     if int(user_id) != current_user.id:
         abort(403)
 
