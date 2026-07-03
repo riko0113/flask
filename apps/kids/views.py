@@ -1,9 +1,6 @@
 import uuid
-from apps.app import db
-from apps.crud.models import User
 from pathlib import Path
-from apps.kids.models import KidsImage
-from apps.kids.forms import UplodImageForm
+
 from flask import (
     Blueprint,
     current_app,
@@ -15,24 +12,34 @@ from flask import (
 
 from flask_login import current_user, login_required
 
-kids= Blueprint("kids", __name__, template_folder="templates")
+from apps.app import db
+from apps.crud.models import User
+from apps.kids.models import KidsImage
+from apps.kids.forms import UplodImageForm
+
+kids = Blueprint("kids", __name__, template_folder="templates")
+
 
 @kids.route("/")
 def index():
-    user_images= (
-
+    user_images = (
         db.session.query(User, KidsImage)
         .join(KidsImage)
         .filter(User.id == KidsImage.user_id)
         .all()
     )
-    return render_template("Kids/index.html", user_images=user_images)
+    return render_template("kids/index.html", user_images=user_images)
 
-@kids.route("/images/<path:filanme>")
+
+@kids.route("/images/<path:filename>")
 def image_file(filename):
-    return send_from_directory(current_app.config["UPLOAD_FOLDER"],filename)
+    return send_from_directory(
+        current_app.config["UPLOAD_FOLDER"],
+        filename
+    )
 
-@kids.route("/upload",methods =["GET","POST"])
+
+@kids.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload_image():
     form = UplodImageForm()
@@ -43,16 +50,21 @@ def upload_image():
         image_uuid_file_name = str(uuid.uuid4()) + ext
 
         image_path = Path(
-            current_app.config["UPLOAD_FOLDER"],image_uuid_file_name
+            current_app.config["UPLOAD_FOLDER"],
+            image_uuid_file_name
         )
         file.save(image_path)
 
-        user_image=KidsImage(
-            user_id = current_user.id,image_path=image_uuid_file_name
+        user_image = KidsImage(
+            user_id=current_user.id,
+            image_path=image_uuid_file_name,
+            genre=form.genre.data,        
+            comment=form.comment.data     
         )
+
         db.session.add(user_image)
         db.session.commit()
 
-
         return redirect(url_for("kids.index"))
-    return render_template("kids/upload.html",form=form)
+
+    return render_template("kids/upload.html", form=form)
