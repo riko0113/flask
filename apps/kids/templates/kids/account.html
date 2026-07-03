@@ -1,12 +1,12 @@
 {% extends "detector/base.html" %}
 {% block content %}
 
-<a href="{{ url_for('crud.edit_user', user_id=current_user.id, model='adult') }}" >
+<a href="{{ url_for('crud.edit_user', user_id=current_user.id, mode='kids') }}" >
     登録情報の編集
 </a>
 <div class="dt-user-posts-header">
     <h2>{{ selected_user.username }} さんの投稿一覧</h2>
-    <a href="{{ url_for('detector.index') }}" class="btn-back">一覧に戻る</a>
+    <a href="{{ url_for('kids.index') }}" class="btn-back">一覧に戻る</a>
 </div>
 
 {% for user, image in user_images %}
@@ -16,7 +16,7 @@
     </header>
     
     <section>
-        <img src = "{{ url_for('detector.image_file', filename = image.image_path) }}"
+        <img src = "{{ url_for('kids.image_file', filename = image.image_path) }}"
              alt = "アップロード画像"
         />
         <p>ジャンル：{{ image.genre }}</p>
