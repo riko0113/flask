@@ -92,16 +92,16 @@ def verify_age():
     if real_age is None:
         return jsonify({"status": "error", "message": "誕生日が登録されていません"}), 400
 
-    # 💡 【照合ロジック】誤差±5歳以内なら本人と判定
+    # 💡 【照合ロジック】誤差±2歳以内なら本人と判定
     age_difference = abs(camera_age - real_age)
     
-    if age_difference <= 5 and real_age >= 20:
+    if age_difference <= 2 and real_age >= 20:
         return jsonify({
             "status": "success", 
             "match": True, 
             "redirect_url": url_for("detector.index")  # ★成功時の遷移先URL
         })
-    elif age_difference <= 5 and real_age < 20:
+    elif age_difference <= 2 and real_age < 20:
         return jsonify({
             "status": "success", 
             "match": False, 
