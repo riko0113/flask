@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>年齢確認</title>
     <script>
       const DETECTOR_URL = "{{ url_for('detector.index') }}";
     </script>
@@ -139,10 +139,7 @@ canvas {
       <div class="title">
         <h1>顔認証ページ</h1>
       </div>
-      <a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" >
-          編集
-      </a>
-      
+
       <div class="video-wrapper">
         <video id="video" width="720" height="560" autoplay muted></video>
       </div>

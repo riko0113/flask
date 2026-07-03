@@ -109,7 +109,7 @@ function verifyAgeWithFlask(cameraAge) {
         alert("顔認証成功！20歳以上で登録年齢と一致しました。");
         location.href = data.redirect_url;
       } else {
-        alert("認証失敗！20歳未満で登録年齢と一致しました。");
+        alert("顔認証成功！20歳未満で登録年齢と一致しました。");
         location.href = data.redirect_url;
       }
     } else {
