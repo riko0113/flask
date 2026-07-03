@@ -55,20 +55,22 @@ def edit_user(user_id):
         form.username.data = user.username
         form.email.data = user.email
 
-    print("フォームのエラー内容:", form.errors)
+    # POSTのときだけ処理を行う
+    if request.method == "POST":
+        # CSRF以外のバリデーション（文字数などの入力チェック）を実行
+        if form.validate():
+            user.username = form.username.data
+            user.email = form.email.data
 
-    if form.validate_on_submit():
-        user.username = form.username.data
-        user.email = form.email.data
-
-        if form.password.data:
-            user.password = form.password.data 
+            if form.password.data:
+                user.password = form.password.data 
+                
+            db.session.add(user)
+            db.session.commit()
             
-        db.session.add(user)
-        db.session.commit()
-        
-        return redirect(url_for("detector.account", user_id=current_user.id))
+            return redirect(url_for("detector.account", user_id=current_user.id))
     
+    # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
     return render_template("crud/edit.html", user=user, form=form)
 
 @crud.route("/users/<user_id>/delete", methods=["POST"])
