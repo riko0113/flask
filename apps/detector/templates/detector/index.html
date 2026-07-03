@@ -1,5 +1,11 @@
 {% extends "detector/base.html" %}
 {% block content %}
+<div class="dt-top-profile-container">
+    <a href="{{ url_for('detector.account', user_id=current_user.id) }}" class="dt-top-profile-link" title="マイページへ">
+        <span class="dt-top-profile-icon"></span>
+        <span class="dt-top-profile-name">{{ current_user.username }}</span>
+    </a>
+</div>
 <!-- 画像アップロード画面へのリンクを追加する-->
 <h3>大人の世界へようこそ</h3>
 <div class ="col-md-10 text-right dt-image-register-btn">

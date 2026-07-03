@@ -77,3 +77,18 @@ def delete_image(image_id):
     db.session.commit()
 
     return redirect(url_for("detector.index"))
+
+@detector.route("/user/<int:user_id>/posts")
+@login_required
+def account(user_id):
+    selected_user = User.query.get_or_404(user_id)
+    
+    user_images = db.session.query(User, UserImage).join(
+        UserImage, User.id == UserImage.user_id
+    ).filter(User.id == user_id).all()
+    
+    return render_template(
+        "detector/account.html",
+        selected_user=selected_user,
+        user_images=user_images
+    )

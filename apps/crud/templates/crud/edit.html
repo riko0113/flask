@@ -10,15 +10,13 @@
 >
   {{ form.csrf_token }}
   <p>
-    {{ form.username.label }} {{ form.username(placeholder="ユーザー名",
-    value=user.username) }}
+    {{ form.username.label }} {{ form.username(placeholder="ユーザー名") }}
   </p>
   {% for error in form.username.errors %}
   <span style="color: red;">{{ error }}</span>
   {% endfor %}
   <p>
-    {{ form.email.label }} {{ form.email(placeholder="メールアドレス",
-    value=user.email) }}
+    {{ form.email.label }} {{ form.email(placeholder="メールアドレス") }}
   </p>
   {% for error in form.email.errors %}
   <span style="color: red;">{{ error }}</span>
