@@ -92,6 +92,7 @@ def account(user_id):
         selected_user=selected_user,
         user_images=user_images
     )
+    
 @detector.route("/edit/<int:image_id>", methods=["GET", "POST"])
 @login_required
 def edit_image(image_id):

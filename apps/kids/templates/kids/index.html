@@ -1,6 +1,13 @@
 {% extends "kids/base.html" %}
 {% block title %}kids{% endblock %}
 {% block content %}
+<div class="dt-top-profile-container">
+    <a href="{{ url_for('kids.account', user_id=current_user.id) }}" class="dt-top-profile-link" title="マイページへ">
+        <span class="dt-top-profile-icon"></span>
+        <span class="dt-top-profile-name">{{ current_user.username }}</span>
+    </a>
+</div>
+
 <h3>kidsのみんな</h3>
 
 <div class="col-md-10 text-right dt-image-register-btn">
