@@ -23,6 +23,21 @@
         <div class="dt-image-username">
             {{ user.username }}
         </div>
+        <form
+          action="{{ url_for('kids.delete_image', image_id=image.id) }}"
+          method="POST"
+        >
+        {{ delete_form.csrf_token }}
+
+        {% if current_user.id == user.id %}
+          <a href="{{ url_for('kids.edit_image', image_id=image.id) }}"
+             class="btn btn-success btn-sm">編集</a>
+          {{ delete_form.submit(class="btn btn-danger btn-sm") }}
+        {% else %}
+          <a class="btn btn-success btn-sm disabled">編集</a>
+          {{ delete_form.submit(class="btn btn-danger btn-sm", disabled=True) }}
+        {% endif %}
+        </form>
     </header>
 
     <section>
@@ -34,8 +49,8 @@
     </section>
 
     <div class="card-body">
-        <p><strong>ジャンル：</strong>{{ image.genre }}</p>
-        <p><strong>コメント：</strong>{{ image.comment }}</p>
+        <p>ジャンル：{{ image.genre }}</p>
+        <p>{{ image.comment }}</p>
     </div>
 
 </div>

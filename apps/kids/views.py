@@ -28,7 +28,10 @@ def index():
         .filter(User.id == KidsImage.user_id)
         .all()
     )
-    return render_template("kids/index.html", user_images=user_images)
+    
+    delete_form = DeleteForm()
+
+    return render_template("kids/index.html", user_images=user_images, delete_form=delete_form)
 
 
 @kids.route("/images/<path:filename>")
@@ -72,7 +75,7 @@ def upload_image():
 @kids.route("/delete/<int:image_id>", methods=["POST"])
 @login_required
 def delete_image(image_id):
-    image = UserImage.query.get_or_404(image_id)
+    image = KidsImage.query.get_or_404(image_id)
 
     if str(image.user_id) != str(current_user.id):
         return redirect(url_for("kids.index"))
@@ -87,8 +90,8 @@ def delete_image(image_id):
 def account(user_id):
     selected_user = User.query.get_or_404(user_id)
     
-    user_images = db.session.query(User, UserImage).join(
-        UserImage, User.id == UserImage.user_id
+    user_images = db.session.query(User, KidsImage).join(
+        KidsImage, User.id == KidsImage.user_id
     ).filter(User.id == user_id).all()
     
     return render_template(
@@ -100,12 +103,12 @@ def account(user_id):
 @kids.route("/edit/<int:image_id>", methods=["GET", "POST"])
 @login_required
 def edit_image(image_id):
-    image = UserImage.query.get_or_404(image_id)
+    image = KidsImage.query.get_or_404(image_id)
 
     # 自分の投稿だけ編集可能
     if image.user_id != current_user.id:
         return redirect(url_for("kids.index"))
-    form = EditImageForm(obj=image)
+    form = EditForm(obj=image)
 
     if form.validate_on_submit():
         # ジャンル・コメントを更新
