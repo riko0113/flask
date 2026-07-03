@@ -8,6 +8,7 @@
   method="POST"
   novalidate="novalidate"
 >
+  <input type="hidden" name="mode" value="{{ request.args.get('mode', 'adult') }}">
   {{ form.csrf_token }}
   <p>
     {{ form.username.label }} {{ form.username(placeholder="ユーザー名") }}
