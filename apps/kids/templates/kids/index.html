@@ -1,8 +1,8 @@
 {% extends "kids/base.html" %}
-{% block title %}kids{% endblock %}
+{% block title %}kidsのみんな{% endblock %}
 {% block content %}
 <div class="dt-top-profile-container">
-    <a href="{{ url_for('detector.account', user_id=current_user.id) }}" class="dt-top-profile-link" title="マイページへ">
+    <a href="{{ url_for('kids.account', user_id=current_user.id, mode='kids') }}" class="dt-top-profile-link" title="マイページへ">
         <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
     </a>
 </div>

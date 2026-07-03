@@ -42,6 +42,8 @@ def create_user():
 @crud.route("/users/<user_id>/edit", methods=["GET","POST"])
 @login_required
 def edit_user(user_id):
+    mode = request.args.get("mode", "adult") or request.form.get("mode", "adult")
+
     if int(user_id) != current_user.id:
         abort(403)
 
@@ -51,63 +53,23 @@ def edit_user(user_id):
 
     form = UserForm()
 
-    mode = request.args.get("mode", "adult")
-    
-    if request.method == "GET":
-        form.username.data = user.username
-        form.email.data = user.email
-
-    # POSTのときだけ処理を行う
     if request.method == "POST":
-        # CSRF以外のバリデーション（文字数などの入力チェック）を実行
-        if form.validate():
+        mode = request.form.get("mode", "adult")
+
+        if form.validate_on_submit():
             user.username = form.username.data
             user.email = form.email.data
 
             if form.password.data:
                 user.password = form.password.data 
-                
+
             db.session.add(user)
             db.session.commit()
-            
+
             if mode == "kids":
                 return redirect(url_for("kids.account", user_id=current_user.id))
             else:
                 return redirect(url_for("detector.account", user_id=current_user.id))
-    
-    # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
-    return render_template("crud/edit.html", user=user, form=form)
-
-@crud.route("/users/<user_id>/edit_kids", methods=["GET","POST"])
-@login_required
-def edit_user_kids(user_id):
-    if int(user_id) != current_user.id:
-        abort(403)
-
-    user = User.query.filter_by(id=user_id).first()
-    if not user:
-        abort(404)
-
-    form = UserForm()
-
-    if request.method == "GET":
-        form.username.data = user.username
-        form.email.data = user.email
-
-    # POSTのときだけ処理を行う
-    if request.method == "POST":
-        # CSRF以外のバリデーション（文字数などの入力チェック）を実行
-        if form.validate():
-            user.username = form.username.data
-            user.email = form.email.data
-
-            if form.password.data:
-                user.password = form.password.data 
-                
-            db.session.add(user)
-            db.session.commit()
-            
-            return redirect(url_for("kids.account", user_id=current_user.id))
     
     # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
     return render_template("crud/edit.html", user=user, form=form)
