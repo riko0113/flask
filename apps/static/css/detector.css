@@ -359,3 +359,32 @@ canvas {
     box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     transform: translateY(-2px);
 }
+
+/* プロフィールアイコンを【画面全体の右上】に強制配置する */
+.dt-top-profile-container {
+    position: absolute;       
+    top: 20px;                
+    right: 20px;              
+    z-index: 100;             
+}
+
+/* リンク全体のスタイル */
+.dt-top-profile-link {
+    display: flex;
+    align-items: center;      
+    text-decoration: none;    
+}
+
+/* 丸いアイコンの見た目 */
+.dt-top-profile-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #2266a2;  /* グレーの色を少し濃く（文字が読みやすいように） */
+    border-radius: 50%;       
+    display: flex;             /* 文字を中央揃えにするため */
+    justify-content: center;   /* 文字を横方向中央に */
+    align-items: center;      /* 文字を縦方向中央に */
+    color: white;             /* 文字の色を白に */
+    font-weight: bold;        /* 太字 */
+    font-size: 16px;          /* 文字の大きさ */
+}
