@@ -34,5 +34,8 @@
   <span style="color: red;">{{ error }}</span>
   {% endfor %}
   <p>{{ form.submit() }}</p>
-    </form>
+</form>
+<a href="{{ url_for('auth.login') }}">
+  <button type="button">戻る</button>
+</a>
 {% endblock %}
