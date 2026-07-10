@@ -25,11 +25,21 @@
         {{ delete_form.csrf_token }}
 
         {% if current_user.id == user.id %}
-          <a href="{{ url_for('detector.edit_image', image_id=image.id) }}"
-             class="btn btn-success btn-sm">編集</a>
+          <button 
+            type="button" 
+            class="btn btn-success" 
+            onclick="location.href='{{ url_for('detector.edit_image', image_id=image.id) }}'"
+          >
+            編集
+          </button>
           {{ delete_form.submit(class="btn btn-danger btn-sm") }}
         {% else %}
-          <a class="btn btn-success btn-sm disabled">編集</a>
+          <button 
+            type="button" 
+            class="btn btn-success" 
+          >
+            編集
+          </button>
           {{ delete_form.submit(class="btn btn-danger btn-sm", disabled=True) }}
         {% endif %}
         </form>

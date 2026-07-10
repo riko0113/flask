@@ -11,8 +11,10 @@ from flask import (
     send_from_directory,
     redirect,
     url_for,
+    request,
 )
 from flask_login import current_user, login_required
+from sqlalchemy import or_
 
 
 detector = Blueprint("detector", __name__, template_folder="templates")
@@ -123,3 +125,37 @@ def edit_image(image_id):
         return redirect(url_for("detector.index"))
 
     return render_template("detector/edit.html", form=form,  image=image)
+
+@detector.route("/search", methods=["GET"])
+@login_required
+def search():
+    # 1. リクエストから検索ワードを取得
+    search_text = request.args.get("search")
+
+    # 2. 基本となるクエリ（UserとUserImageを結合）
+    query = db.session.query(User, UserImage).join(
+        UserImage, User.id == UserImage.user_id
+    )
+
+    # 3. 検索ワードがある場合、ジャンルまたはコメントでフィルタリング
+    if search_text:
+        like_text = f"%{search_text}%"
+        query = query.filter(
+            or_(
+                UserImage.genre.like(like_text),     # ジャンルに部分一致
+                UserImage.comment.like(like_text)     # コメントに部分一致
+            )
+        )
+
+    # クエリの実行（絞り込まれた結果をリストで取得）
+    filtered_user_images = query.all()
+
+    # 4. 画面に必要なフォームの用意
+    delete_form = DeleteForm()
+
+    # 5. テンプレートへ渡す
+    return render_template(
+        "detector/index.html",
+        user_images=filtered_user_images,
+        delete_form=delete_form,
+    )
