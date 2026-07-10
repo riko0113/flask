@@ -1,4 +1,5 @@
 {% extends "kids/base.html" %}
+{% block title %}ユーザー過去投稿{% endblock %}
 {% block content %}
 
 <a href="{{ url_for('crud.edit_user', user_id=current_user.id, mode='kids') }}" >
@@ -20,7 +21,7 @@
              alt = "アップロード画像"
         />
         <p>ジャンル：{{ image.genre }}</p>
-        <p>コメント：{{ image.comment }}</p>
+        <p>{{ image.comment }}</p>
     </section>
 </div>
 {% else %}
