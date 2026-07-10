@@ -127,11 +127,7 @@ def edit_image(image_id):
     image = KidsImage.query.get_or_404(image_id)
 
     # 自分の投稿だけ編集可能
-<<<<<<< HEAD
     if str(image.user_id) != str(current_user.id):
-=======
-    if int(image.user_id) != int(current_user.id):
->>>>>>> b52b92d1637b54abf390a9bbf7260beab407729f
         return redirect(url_for("kids.index"))
     form = EditForm(obj=image)
 
