@@ -16,6 +16,8 @@ from apps.app import db
 from apps.crud.models import User
 from apps.kids.models import KidsImage
 from apps.kids.forms import UplodImageForm, DeleteForm, EditForm
+from apps.kids.image_check import check_ng_image
+
 
 kids = Blueprint("kids", __name__, template_folder="templates")
 
@@ -56,13 +58,30 @@ def upload_image():
             current_app.config["UPLOAD_FOLDER"],
             image_uuid_file_name
         )
+        # 画像を一時保存
         file.save(image_path)
 
+        # AIチェック
+        is_ng, reason, score = check_ng_image(image_path)
+        if is_ng and score > 0.35:
+            # 保存した画像を削除
+            image_path.unlink()
+            form.image.errors.append(
+                f"これは（{reason}）のため投稿できません。"
+            )
+            return render_template(
+                "kids/upload.html",
+                form=form
+            )
+
+        # 問題なければDBに保存
         user_image = KidsImage(
             user_id=current_user.id,
             image_path=image_uuid_file_name,
             genre=form.genre.data,        
-            comment=form.comment.data     
+            comment=form.comment.data,
+            is_detected=True,
+            detection_reason="問題なし"   
         )
 
         db.session.add(user_image)
@@ -124,7 +143,35 @@ def edit_image(image_id):
                 filename
             )
             file.save(image_path)
+             # AIチェック
+            is_ng, reason, score = check_ng_image(image_path)
+
+            if is_ng and score > 0.35:
+                # 禁止画像なので削除
+                if image_path.exists():
+                    image_path.unlink()
+
+                form.image.errors.append(
+                    f"これは{reason}のため変更できません。"
+                )
+                return render_template(
+                    "kids/edit.html",
+                    form=form,
+                    image=image
+                )
+            
+            # 問題なければ画像を変更
+            old_image_path = Path(
+                current_app.config["UPLOAD_FOLDER"],
+                image.image_path
+            )
+            # 古い画像を削除
+            if old_image_path.exists():
+                old_image_path.unlink()
+
             image.image_path = filename
+            image.is_detected = True
+            image.detection_reason = "問題なし"
 
         db.session.commit()
         return redirect(url_for("kids.index"))
