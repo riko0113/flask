@@ -1,0 +1,480 @@
+@charset "UTF-8";
+
+/* ==========================================
+   🌌 グローバルサイバーネイビー背景 & 全体設定
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+body {
+    background-color: #020617; /* いつもの深い宇宙のダークネイビー */
+    color: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 24px;
+    background-image: 
+        linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+/* ==========================================
+   👤 右上のマイページ丸型アイコン設定
+   ========================================== */
+.dt-top-profile-container {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: -10px;
+}
+
+.dt-top-profile-link {
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.dt-top-profile-link:hover {
+    transform: scale(1.1);
+}
+
+.dt-top-profile-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #6366f1, #38bdf8);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 18px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================
+   🪐 タイトル・見出し（H2, H3, H4）のネオン化
+   ========================================== */
+h2, h3, h4 {
+    font-weight: 800;
+    margin-bottom: 12px;
+    text-align: center;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+h2 { font-size: 28px; }
+h3 { font-size: 26px; }
+h4 { font-size: 24px; }
+
+/* 見出しの下の説明文など */
+h4 + p, .container.mt-4 > p, body > div > p {
+    color: #94a3b8;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* ==========================================
+   📋 投稿一覧画面（account）のヘッダー調整
+   ========================================== */
+.dt-user-posts-header {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+    padding-bottom: 16px;
+}
+
+.dt-user-posts-header h2 {
+    margin: 0;
+    text-align: left;
+}
+
+/* ==========================================
+   🧪 コンテナ & 入力フォーム（新規登録・編集画面用）
+   ========================================== */
+form, .container.mt-4, body > div:has(form) {
+    max-width: 550px;
+    width: 100%;
+    padding: 40px;
+    background: rgba(15, 23, 42, 0.65);
+    border-radius: 16px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(56, 189, 248, 0.1); 
+    backdrop-filter: blur(12px);
+    box-sizing: border-box;
+    margin: 10px auto;
+}
+
+form div {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* ==========================================
+   ⚡ サイバーテック風入力パーツ群
+   ========================================== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+.form-select,
+.form-control,
+.form-control-file {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(2, 6, 23, 0.7) !important; 
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    border-radius: 8px !important;
+    color: #f8fafc !important; 
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type="file"] {
+    color: #94a3b8;
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+input:focus, .form-select:focus, .form-control:focus {
+    outline: none !important;
+    border-color: #38bdf8 !important;
+    background: rgba(15, 23, 42, 0.9) !important;
+    box-shadow: 
+        0 0 0 1px #38bdf8,
+        0 0 15px rgba(56, 189, 248, 0.3) !important;
+}
+
+/* ==========================================
+   🚀 ボタン系スタイル（メイン・戻るボタン）
+   ========================================== */
+.btn-primary, input[type="submit"] {
+    display: inline-block;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #6366f1, #38bdf8) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, input[type="submit"]:hover {
+    filter: brightness(1.15);
+    box-shadow: 0 4px 25px rgba(56, 189, 248, 0.6);
+    transform: translateY(-2px);
+}
+
+form .mb-3 img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+}
+
+.btn-secondary, .btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid rgba(148, 163, 184, 0.4) !important;
+    color: #94a3b8 !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover, .btn-back:hover {
+    background: rgba(56, 189, 248, 0.1) !important;
+    color: #38bdf8 !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+/* 🎯 「画像新規登録」ボタンエリアを中央ぞろえにする */
+.dt-image-register-btn {
+    max-width: 700px;
+    width: 100% !important;
+    float: none !important;
+    margin: 0 auto 10px auto !important;
+    text-align: center !important; /* 🎯 中央寄せにする */
+}
+.dt-image-register-btn .btn-primary {
+    width: auto !important;
+    padding: 10px 24px !important;
+}
+
+body > a[href*="edit_user"] {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    text-align: right;
+    color: #38bdf8;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    margin-bottom: -15px;
+    transition: color 0.3s;
+}
+body > a[href*="edit_user"]:hover {
+    color: #818cf8;
+    text-shadow: 0 0 10px rgba(129, 140, 248, 0.4);
+}
+
+/* ==========================================
+   🖼️ 画像一覧用カード（タイムラインスタイル）
+   ========================================== */
+.card.dt-image-content,
+.card.image-content-between {
+    max-width: 700px !important;
+    width: 100% !important;
+    flex: none !important; 
+    float: none !important;
+    margin: 20px auto !important;
+    border: 1px solid rgba(56, 189, 248, 0.15) !important;
+    padding: 24px !important;
+    border-radius: 16px !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    display: block !important;
+}
+
+/* 🌟 カードヘッダー：ユーザー名と右側のフォームを両端配置 */
+header.d-flex,
+.card.dt-image-content header {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important; 
+    align-items: center !important;
+    margin-bottom: 16px !important;
+    width: 100% !important;
+}
+
+.dt-image-username { 
+    color: #38bdf8 !important; 
+    font-weight: 800 !important; 
+    font-size: 18px !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+/* 🌟 ボタンを囲むフォーム：透明化して右上（右端）に綺麗に寄せる */
+header.d-flex form,
+.card.dt-image-content header form {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important; 
+    max-width: none !important;
+    
+    display: flex !important;       
+    flex-direction: row !important; /* 横並び */
+    align-items: center !important;
+    justify-content: flex-end !important; 
+    gap: 8px !important;            
+}
+
+/* 🌟 「編集」と「削除」のボタンサイズ固定 */
+.btn-success.btn-sm,
+.btn-danger.btn-sm {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 70px !important;          
+    height: 32px !important;         
+    padding: 0 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    margin: 0 !important;            
+    white-space: nowrap !important;  
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;       
+    transition: all 0.3s ease;
+}
+
+/* 編集ボタン（サイバーグリーン） */
+.btn-success.btn-sm {
+    background-color: rgba(34, 197, 94, 0.1) !important;
+    border: 1px solid rgba(34, 197, 94, 0.4) !important;
+    color: #22c55e !important;
+}
+.btn-success.btn-sm:hover:not(.disabled) {
+    background-color: rgba(34, 197, 94, 0.2) !important;
+    border-color: #22c55e !important;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+}
+
+/* 削除ボタン（サイバーレッド） */
+.btn-danger.btn-sm {
+    background: rgba(244, 63, 94, 0.1) !important;
+    border: 1px solid rgba(244, 63, 94, 0.4) !important;
+    color: #f43f5e !important;
+    cursor: pointer;
+}
+.btn-danger.btn-sm:hover:not(:disabled) {
+    background: rgba(244, 63, 94, 0.2) !important;
+    border-color: #f43f5e !important;
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+}
+
+/* 🎯 画像設定 */
+.card img { 
+    width: 100% !important; 
+    height: 350px !important;           
+    object-fit: contain !important;     
+    background-color: rgba(2, 6, 23, 0.5) !important; 
+    border-radius: 10px !important; 
+    border: 1px solid rgba(99, 102, 241, 0.3) !important; 
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15) !important; 
+    margin-bottom: 16px !important;
+}
+
+/* 🎯 ジャンルとコメントの文字を中央ぞろえにする */
+.card section p,
+.card-body p {
+    text-align: center !important;   /* 🎯 真ん中寄せに確定 */
+    color: #cbd5e1 !important;
+    font-size: 15px !important;
+    margin-bottom: 6px !important;
+    padding-left: 0 !important;      
+}
+
+/* ==========================================
+   🚫 無効化（disabled）時の正しい設定
+   ========================================== */
+/* 他人の投稿の「編集」リンク（a.disabled）だけのクリックを無効化 */
+a.btn.disabled {
+    pointer-events: none !important; 
+    opacity: 0.3 !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #64748b !important;
+    cursor: not-allowed !important;
+}
+
+/* 他人の投稿の「削除」ボタン（input:disabled）だけのクリックを無効化 */
+button:disabled,
+input[type="submit"]:disabled {
+    pointer-events: none !important; 
+    opacity: 0.3 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #64748b !important;
+    cursor: not-allowed !important;
+}
+
+/* ==========================================
+   ⚠️ その他メッセージ・区切り線
+   ========================================== */
+.no-posts {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 16px;
+    margin-top: 40px;
+}
+
+.text-danger,
+span[style*="color:red;"],
+span[style*="color: red;"] {
+    color: #f43f5e !important;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 4px;
+    margin-bottom: 14px;
+    display: block;
+    text-shadow: 0 0 8px rgba(244, 63, 94, 0.3);
+}
+
+hr { 
+    border: 0; 
+    border-top: 1px solid rgba(56, 189, 248, 0.1); 
+    margin: 24px 0; 
+}
+
+/* ==========================================
+   🛠️ 画像編集画面（edit.html）専用の最終調整
+   ========================================== */
+/* 編集画面のタイトル部分のコンテナ */
+body > div:has(h4) {
+    max-width: 550px;
+    width: 100%;
+    text-align: center; /* 中身のテキストを全部中央寄せ */
+}
+
+/* 「画像編集」の見出し */
+body > div h4 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+/* タイトル下の説明文（「画像・ジャンル・コメントを編集できます♪」など） */
+body > div h4 ~ p {
+    color: #94a3b8 !important;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+/* 編集フォーム内の「戻る」ボタンと「更新」ボタンの並び調整 */
+form div:has(.btn-secondary) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+/* 戻るボタンも横幅いっぱいに綺麗に広げる */
+form .btn-secondary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+}
