@@ -1,5 +1,6 @@
 import uuid
 from pathlib import Path
+from sqlalchemy import or_
 
 from flask import (
     Blueprint,
@@ -8,6 +9,7 @@ from flask import (
     send_from_directory,
     redirect,
     url_for,
+    request,
 )
 
 from flask_login import current_user, login_required
@@ -177,3 +179,37 @@ def edit_image(image_id):
         return redirect(url_for("kids.index"))
 
     return render_template("kids/edit.html", form=form,  image=image)
+
+@kids.route("/search", methods=["GET"])
+@login_required
+def search():
+    # 1. リクエストから検索ワードを取得
+    search_text = request.args.get("search")
+
+    # 2. 基本となるクエリ（UserとUserImageを結合）
+    query = db.session.query(User, KidsImage).join(
+        KidsImage, User.id == KidsImage.user_id
+    )
+
+    # 3. 検索ワードがある場合、ジャンルまたはコメントでフィルタリング
+    if search_text:
+        like_text = f"%{search_text}%"
+        query = query.filter(
+            or_(
+                KidsImage.genre.like(like_text),     # ジャンルに部分一致
+                KidsImage.comment.like(like_text)     # コメントに部分一致
+            )
+        )
+
+    # クエリの実行（絞り込まれた結果をリストで取得）
+    filtered_user_images = query.all()
+
+    # 4. 画面に必要なフォームの用意
+    delete_form = DeleteForm()
+
+    # 5. テンプレートへ渡す
+    return render_template(
+        "kids/index.html",
+        user_images=filtered_user_images,
+        delete_form=delete_form,
+    )
