@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock  %}</title>
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/detector.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/kids.css') }}" />
 </head>
 <body>
     {% if request.endpoint in ['kids.index', 'kids.search'] %}

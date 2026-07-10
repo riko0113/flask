@@ -139,12 +139,42 @@ input:focus, .form-select:focus, .form-control:focus {
     transform: translateY(-2px);
 }
 
-/* 画像一覧の「画像新規登録」ボタン配置エリア */
+form .mb-3 img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+}
+
+.btn-secondary, .btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid rgba(148, 163, 184, 0.4) !important;
+    color: #94a3b8 !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover, .btn-back:hover {
+    background: rgba(56, 189, 248, 0.1) !important;
+    color: #38bdf8 !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+/* 「画像新規登録」ボタン配置エリア */
 .dt-image-register-btn {
     max-width: 700px;
-    width: 100%;
-    margin: 0 auto 20px auto;
-    text-align: right; /* 右寄せ */
+    width: 100% !important;
+    float: none !important;
+    margin: 0 auto 10px auto !important; /* 下のカードとの隙間を少し調整 */
+    text-align: center !important;        /* 🎯 right から center に変更！ */
 }
 .dt-image-register-btn .btn-primary {
     width: auto; /* 一覧画面の登録ボタンは幅自動に */
@@ -234,12 +264,20 @@ input:focus, .form-select:focus, .form-control:focus {
 }
 
 /* カード内のテキスト情報 */
+/* カード内のテキスト情報 */
 .card section p {
-    text-align: left;
-    color: #cbd5e1;
-    font-size: 14px;
-    margin-bottom: 6px;
-    padding-left: 4px;
+    text-align: center !important;   /* 🎯 left から center に変更！ */
+    color: #cbd5e1 !important;
+    font-size: 15px !important;
+    margin-bottom: 6px !important;
+    padding-left: 0 !important;      /* 🎯 左余白をリセット */
+}
+
+/* 無効化（disabled）時の設定 */
+.disabled, :disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
 }
 
 /* ==========================================
