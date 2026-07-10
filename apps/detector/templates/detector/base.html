@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/detector.css') }}" />
 </head>
 <body>
-    {% if url_for(request.endpoint) == url_for('detector.index') or 
-        url_for(request.endpoint) == url_for('detector.search') %}
+    {% if request.endpoint in ['detector.index', 'detector.search'] %}
             <form
               method="GET"
               action="{{url_for('detector.search')}}"
