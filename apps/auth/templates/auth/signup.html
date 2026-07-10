@@ -1,32 +1,61 @@
 {% extends "auth/base.html" %}
 {% block title %}ユーザー新規登録{% endblock %}
 {% block content %}
-<h2>ユーザー新規登録</h2>
 
-<form
-  action="{{ url_for('auth.signup', next=request.args.get('next')) }}"
-  method="POST"
-  novalidate="novalidate"
->
-    {% for message in get_flashed_messages() %}
-    <p style="color: red;">{{ message }}</p>
-    {% endfor %}
-    {{ form.csrf_token }}
-    <p>
-        {{ form.username.label }}
-        {{ form.username(size=30, placeholder="ユーザー名") }}
-    </p>
-    {% for error in form.username.errors %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-    <p>{{ form.email.label }} {{ form.email(placeholder="メールアドレス") }}</p>
-    {% for error in form.email.errors %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-    <p>{{ form.password.label }} {{ form.password(placeholder="パスワード") }}</p>
-    {% for error in form.password.errors %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-    <p>{{ form.submit() }}</p>
-</form>
+<div class="auth-wrapper">
+  <div class="auth-container-card">
+    <h2>ユーザー新規登録</h2>
+
+    <form
+      action="{{ url_for('auth.signup', next=request.args.get('next')) }}"
+      method="POST"
+      novalidate="novalidate"
+    >
+      {% for message in get_flashed_messages() %}
+      <p class="flash-message">{{ message }}</p>
+      {% endfor %}
+      
+      {{ form.csrf_token }}
+
+      <div class="form-group">
+          {{ form.username.label }}
+          {{ form.username(size=30, placeholder="ユーザー名") }}
+          {% for error in form.username.errors %}
+          <span class="error-text">{{ error }}</span>
+          {% endfor %}
+      </div>
+
+      {% if form.birthday %}
+      <div class="form-group">
+          {{ form.birthday.label }}
+          {{ form.birthday() }}
+          {% for error in form.birthday.errors %}
+          <span class="error-text">{{ error }}</span>
+          {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="form-group">
+          {{ form.email.label }} 
+          {{ form.email(placeholder="メールアドレス") }}
+          {% for error in form.email.errors %}
+          <span class="error-text">{{ error }}</span>
+          {% endfor %}
+      </div>
+
+      <div class="form-group">
+          {{ form.password.label }} 
+          {{ form.password(placeholder="パスワード") }}
+          {% for error in form.password.errors %}
+          <span class="error-text">{{ error }}</span>
+          {% endfor %}
+      </div>
+
+      <div class="main-action">
+          {{ form.submit() }}
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
