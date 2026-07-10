@@ -1,48 +1,61 @@
 {% extends 'crud/base.html' %}
 {% block title %}ユーザー編集{% endblock %}
 {% block content %}
-<h2>ユーザー編集</h2>
 
-<form
-  action="{{ url_for('crud.edit_user', user_id=user.id) }}"
-  method="POST"
-  novalidate="novalidate"
->
-  <input type="hidden" name="mode" value="{{ request.args.get('mode', 'adult') }}">
-  {{ form.csrf_token }}
-  <p>
-    {{ form.username.label }} {{ form.username(placeholder="ユーザー名") }}
-  </p>
-  {% for error in form.username.errors %}
-  <span style="color: red;">{{ error }}</span>
-  {% endfor %}
-  <p>
-    {{ form.email.label }} {{ form.email(placeholder="メールアドレス") }}
-  </p>
-  {% for error in form.email.errors %}
-  <span style="color: red;">{{ error }}</span>
-  {% endfor %}
-  <p>{{ form.password.label }} {{ form.password(placeholder="パスワード") }}</p>
-  {% for error in form.password.errors %}
-  <span style="color: red;">{{ error }}</span>
-  {% endfor %}
-  <p><input type="submit" value="更新" /></p>
-</form>
-<div>
-  {% if request.args.get('mode') == 'kids' %}
-    <form action="{{ url_for('kids.account', user_id=user.id) }}" method="GET">
+<div class="crud-container-card small-size">
+  <h2>ユーザー編集</h2>
+
+  <form
+    action="{{ url_for('crud.edit_user', user_id=user.id) }}"
+    method="POST"
+    novalidate="novalidate"
+  >
+    <input type="hidden" name="mode" value="{{ request.args.get('mode', 'adult') }}">
     {{ form.csrf_token }}
-    <input type="submit" value="戻る" />
-    </form>
-  {% else %}
-    <form action="{{ url_for('detector.account', user_id=user.id) }}" method="GET" >
-    {{ form.csrf_token }}
-    <input type="submit" value="戻る" />
-    </form>
-  {% endif %}
+    
+    <div class="form-group">
+      {{ form.username.label }} 
+      {{ form.username(placeholder="ユーザー名") }}
+      {% for error in form.username.errors %}
+      <span class="error-text">{{ error }}</span>
+      {% endfor %}
+    </div>
+    
+    <div class="form-group">
+      {{ form.email.label }} 
+      {{ form.email(placeholder="メールアドレス") }}
+      {% for error in form.email.errors %}
+      <span class="error-text">{{ error }}</span>
+      {% endfor %}
+    </div>
+    
+    <div class="form-group">
+      {{ form.password.label }} 
+      {{ form.password(placeholder="パスワード") }}
+      {% for error in form.password.errors %}
+      <span class="error-text">{{ error }}</span>
+      {% endfor %}
+    </div>
+    
+    <div class="main-action">
+      <input type="submit" value="更新" class="btn-main-update" />
+    </div>
+
+    <div class="crud-action-subrow">
+      {% if request.args.get('mode') == 'kids' %}
+        <a href="{{ url_for('kids.account', user_id=user.id) }}" class="btn-sub-back">戻る</a>
+      {% else %}
+        <a href="{{ url_for('detector.account', user_id=user.id) }}" class="btn-sub-back">戻る</a>
+      {% endif %}
+
+      <button 
+        type="submit" 
+        formaction="{{ url_for('crud.delete_user', user_id=user.id) }}" 
+        class="btn-sub-delete">
+        削除
+      </button>
+    </div>
+  </form>
 </div>
-<form action="{{ url_for('crud.delete_user', user_id=user.id) }}" method="POST">
-    {{ form.csrf_token }}
-    <input type="submit" value="削除" />
-</form>
+
 {% endblock %}
