@@ -139,7 +139,6 @@ input:focus, .form-select:focus, .form-control:focus {
     transform: translateY(-2px);
 }
 
-<<<<<<< HEAD
 form .mb-3 img {
     display: block;
     margin: 0 auto;
@@ -176,14 +175,6 @@ form .mb-3 img {
     float: none !important;
     margin: 0 auto 10px auto !important; /* 下のカードとの隙間を少し調整 */
     text-align: center !important;        /* 🎯 right から center に変更！ */
-=======
-/* 画像一覧の「画像新規登録」ボタン配置エリア */
-.dt-image-register-btn {
-    max-width: 700px;
-    width: 100%;
-    margin: 0 auto 20px auto;
-    text-align: right; /* 右寄せ */
->>>>>>> d544cef66d7033a0ce2c26132186de06fbfae8f6
 }
 .dt-image-register-btn .btn-primary {
     width: auto; /* 一覧画面の登録ボタンは幅自動に */
@@ -275,7 +266,6 @@ form .mb-3 img {
 /* カード内のテキスト情報 */
 /* カード内のテキスト情報 */
 .card section p {
-<<<<<<< HEAD
     text-align: center !important;   /* 🎯 left から center に変更！ */
     color: #cbd5e1 !important;
     font-size: 15px !important;
@@ -288,13 +278,6 @@ form .mb-3 img {
     opacity: 0.3 !important;
     cursor: not-allowed !important;
     box-shadow: none !important;
-=======
-    text-align: left;
-    color: #cbd5e1;
-    font-size: 14px;
-    margin-bottom: 6px;
-    padding-left: 4px;
->>>>>>> d544cef66d7033a0ce2c26132186de06fbfae8f6
 }
 
 /* ==========================================

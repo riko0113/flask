@@ -2,7 +2,7 @@
 {% block title %}ユーザー過去投稿{% endblock %}
 {% block content %}
 
-<a href="{{ url_for('crud.edit_user', user_id=current_user.id, model='adult') }}" >
+<a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" >
     登録情報の編集
 </a>
 <a href="{{ url_for('auth.logout') }}" method="post">
