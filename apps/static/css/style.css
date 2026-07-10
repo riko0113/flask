@@ -305,3 +305,28 @@ canvas {
     box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     transform: translateY(-2px);
 }
+
+/* 入力欄とボタンを横並びにして一体化させる */
+.search-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* 必要に応じて全体の横幅を調整してください */
+}
+
+/* ★検索ボタンのスタイル調整 */
+.dt-search-btn {
+    padding: 12px 16px;
+    background-color: #94afdb; /* お好みのボタンの色（例はきれいな青） */
+    color: #ffffff;
+    border: 1px solid #3b82f6;
+    border-radius: 0 4px 4px 0; /* 右側だけ丸みをつける */
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* ボタンにマウスが乗ったとき（ホバー）の変化 */
+.dt-search-btn:hover {
+    background-color: #4e6390;
+    border-color: #4e6390;
+}
