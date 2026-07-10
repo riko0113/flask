@@ -11,7 +11,7 @@
 }
 
 body {
-    background-color: #020617; /* 深い宇宙のダークネイビー */
+    background-color: #020617; /* いつもの深い宇宙のダークネイビー */
     color: #f1f5f9;
     min-height: 100vh;
     display: flex;
@@ -81,7 +81,7 @@ h3 { font-size: 26px; }
 h4 { font-size: 24px; }
 
 /* 見出しの下の説明文など */
-h4 + p, .upload-container > p, body > div > p {
+h4 + p, .container.mt-4 > p, body > div > p {
     color: #94a3b8;
     text-align: center;
     font-size: 14px;
@@ -111,7 +111,7 @@ h4 + p, .upload-container > p, body > div > p {
 /* ==========================================
    🧪 コンテナ & 入力フォーム（新規登録・編集画面用）
    ========================================== */
-form, .upload-container, body > div:has(form) {
+form, .container.mt-4, body > div:has(form) {
     max-width: 550px;
     width: 100%;
     padding: 40px;
@@ -226,13 +226,13 @@ form .mb-3 img {
     box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
 }
 
-/* 「画像新規登録」ボタン配置エリア */
+/* 🎯 「画像新規登録」ボタンエリアを中央ぞろえにする */
 .dt-image-register-btn {
     max-width: 700px;
     width: 100% !important;
     float: none !important;
-    margin: 0 auto 10px auto !important; /* 下のカードとの隙間を少し調整 */
-    text-align: center !important;        /* 🎯 right から center に変更！ */
+    margin: 0 auto 10px auto !important;
+    text-align: center !important; /* 🎯 中央寄せにする */
 }
 .dt-image-register-btn .btn-primary {
     width: auto !important;
@@ -259,7 +259,7 @@ body > a[href*="edit_user"]:hover {
 /* ==========================================
    🖼️ 画像一覧用カード（タイムラインスタイル）
    ========================================== */
-/* 💥 Bootstrapの独自スタイルを完全に破壊して固定化 */
+.card.dt-image-content,
 .card.image-content-between {
     max-width: 700px !important;
     width: 100% !important;
@@ -272,11 +272,12 @@ body > a[href*="edit_user"]:hover {
     background: rgba(15, 23, 42, 0.6) !important;
     backdrop-filter: blur(8px) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-    display: block !important; /* 縦並びのコンテンツ基盤を確定 */
+    display: block !important;
 }
 
-/* 🌟 カードヘッダー：ユーザー名と右側のフォームを綺麗に両端配置 */
-.dt-card-header {
+/* 🌟 カードヘッダー：ユーザー名と右側のフォームを両端配置 */
+header.d-flex,
+.card.dt-image-content header {
     display: flex !important;
     flex-direction: row !important;
     justify-content: space-between !important; 
@@ -293,9 +294,9 @@ body > a[href*="edit_user"]:hover {
     text-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
 }
 
-/* 🌟 ボタンを囲むフォーム：Bootstrapの巨大化を強制リセット */
-.dt-button-group {
-    /* 🚨 邪魔な背景・枠線・シャドウ・余白をすべて完全にリセットして消滅させる */
+/* 🌟 ボタンを囲むフォーム：透明化して右上（右端）に綺麗に寄せる */
+header.d-flex form,
+.card.dt-image-content header form {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
@@ -303,26 +304,24 @@ body > a[href*="edit_user"]:hover {
     backdrop-filter: none !important;
     padding: 0 !important;
     margin: 0 !important;
-    
-    /* 🚀 横並びを維持しつつ、右端に寄せる設定 */
-    display: flex !important;       
-    flex-direction: row !important; 
-    align-items: center !important;
-    justify-content: flex-end !important; /* 右側にビシッと寄せる */
-    gap: 8px !important;            
-    
     width: auto !important; 
     max-width: none !important;
+    
+    display: flex !important;       
+    flex-direction: row !important; /* 横並び */
+    align-items: center !important;
+    justify-content: flex-end !important; 
+    gap: 8px !important;            
 }
 
-/* 🌟 「編集」と「削除」のボタンサイズと形をガチガチに統一 */
+/* 🌟 「編集」と「削除」のボタンサイズ固定 */
 .btn-success.btn-sm,
 .btn-danger.btn-sm {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 70px !important;          /* 🎯 横幅を70pxで完全に固定！ */
-    height: 32px !important;         /* 🎯 高さを32pxで完全に固定！ */
+    width: 70px !important;          
+    height: 32px !important;         
     padding: 0 !important;
     font-size: 13px !important;
     font-weight: 600 !important;
@@ -331,7 +330,7 @@ body > a[href*="edit_user"]:hover {
     margin: 0 !important;            
     white-space: nowrap !important;  
     box-sizing: border-box !important;
-    flex-shrink: 0 !important;       /* 横に押し潰されるのを絶対防御 */
+    flex-shrink: 0 !important;       
     transition: all 0.3s ease;
 }
 
@@ -360,7 +359,7 @@ body > a[href*="edit_user"]:hover {
     box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
 }
 
-/* 🎯 お酒ボトルが変形せず綺麗に中央に収まる画像設定 */
+/* 🎯 画像設定 */
 .card img { 
     width: 100% !important; 
     height: 350px !important;           
@@ -372,21 +371,38 @@ body > a[href*="edit_user"]:hover {
     margin-bottom: 16px !important;
 }
 
-/* カード内のテキスト情報 */
-/* カード内のテキスト情報 */
-.card section p {
-    text-align: center !important;   /* 🎯 left から center に変更！ */
+/* 🎯 ジャンルとコメントの文字を中央ぞろえにする */
+.card section p,
+.card-body p {
+    text-align: center !important;   /* 🎯 真ん中寄せに確定 */
     color: #cbd5e1 !important;
     font-size: 15px !important;
     margin-bottom: 6px !important;
-    padding-left: 0 !important;      /* 🎯 左余白をリセット */
+    padding-left: 0 !important;      
 }
 
-/* 無効化（disabled）時の設定 */
-.disabled, :disabled {
+/* ==========================================
+   🚫 無効化（disabled）時の正しい設定
+   ========================================== */
+/* 他人の投稿の「編集」リンク（a.disabled）だけのクリックを無効化 */
+a.btn.disabled {
+    pointer-events: none !important; 
     opacity: 0.3 !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #64748b !important;
     cursor: not-allowed !important;
-    box-shadow: none !important;
+}
+
+/* 他人の投稿の「削除」ボタン（input:disabled）だけのクリックを無効化 */
+button:disabled,
+input[type="submit"]:disabled {
+    pointer-events: none !important; 
+    opacity: 0.3 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #64748b !important;
+    cursor: not-allowed !important;
 }
 
 /* ==========================================
@@ -399,6 +415,7 @@ body > a[href*="edit_user"]:hover {
     margin-top: 40px;
 }
 
+.text-danger,
 span[style*="color:red;"],
 span[style*="color: red;"] {
     color: #f43f5e !important;
@@ -414,4 +431,50 @@ hr {
     border: 0; 
     border-top: 1px solid rgba(56, 189, 248, 0.1); 
     margin: 24px 0; 
+}
+
+/* ==========================================
+   🛠️ 画像編集画面（edit.html）専用の最終調整
+   ========================================== */
+/* 編集画面のタイトル部分のコンテナ */
+body > div:has(h4) {
+    max-width: 550px;
+    width: 100%;
+    text-align: center; /* 中身のテキストを全部中央寄せ */
+}
+
+/* 「画像編集」の見出し */
+body > div h4 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+/* タイトル下の説明文（「画像・ジャンル・コメントを編集できます♪」など） */
+body > div h4 ~ p {
+    color: #94a3b8 !important;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+/* 編集フォーム内の「戻る」ボタンと「更新」ボタンの並び調整 */
+form div:has(.btn-secondary) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+/* 戻るボタンも横幅いっぱいに綺麗に広げる */
+form .btn-secondary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
 }

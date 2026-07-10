@@ -26,7 +26,7 @@ body {
 }
 
 /* ==========================================
-   🛰️ ログインフォーム（ガラスモーフィズム & ネオン）
+   🛰️ ログイン・編集フォーム共通（ガラスモーフィズム & ネオン）
    ========================================== */
 form {
     max-width: 450px;
@@ -70,18 +70,21 @@ h2, h4 {
    📋 入力項目（pタグ）& ラベル
    ========================================== */
 form p {
-    margin-bottom: 24px;
+    margin-top: 0 !important;
+    margin-bottom: 24px !important; /* 🎯 隙間を24pxに広げて、くっつかないように固定 */
     display: flex;
     flex-direction: column;
+    gap: 8px;
+    width: 100%;
 }
 
-form label, .result-label {
-    color: #38bdf8;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 8px;
+form label {
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 4px;
 }
 
 /* ==========================================
@@ -176,7 +179,61 @@ button[type="button"]:hover,
 }
 
 /* ==========================================
-   ⚠️ エラーメッセージ
+   🎯 編集画面専用：下部のサブボタン（戻る・削除）の横並びコンパクト化
+   ========================================== */
+.crud-action-subrow {
+    display: flex;
+    justify-content: center; 
+    gap: 16px;
+    width: 100%;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+/* 「戻る」と「削除」をきゅっと小さく上品にする共通設定 */
+.btn-sub-back,
+.btn-sub-delete {
+    display: inline-block;
+    width: auto !important;          /* 幅100%に広がらないように固定 */
+    min-width: 100px;                 /* 押しやすい最低サイズ */
+    padding: 8px 24px !important;    /* 上下を細く、左右をスマートに */
+    border-radius: 6px !important;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+/* 戻るボタン（すっきりグレー） */
+.btn-sub-back {
+    background: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+    color: #94a3b8 !important;
+}
+.btn-sub-back:hover {
+    background: rgba(56, 189, 248, 0.08) !important;
+    color: #38bdf8 !important;
+    border-color: #38bdf8 !important;
+}
+
+/* 削除ボタン（サイバーレッド） */
+.btn-sub-delete {
+    background: rgba(244, 63, 94, 0.06) !important;
+    border: 1px solid rgba(244, 63, 94, 0.3) !important;
+    color: #f43f5e !important;
+}
+.btn-sub-delete:hover {
+    background: rgba(244, 63, 94, 0.15) !important;
+    border-color: #f43f5e !important;
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+}
+
+/* ==========================================
+   ⚠️ エラーメッセージ & ログイン画面の隙間対策
    ========================================== */
 span[style*="color: red;"], 
 p[style*="color: red;"],
@@ -184,9 +241,11 @@ span[style*="color:red;"] {
     color: #f43f5e !important;
     font-size: 12px;
     font-weight: bold;
-    margin-top: 6px;
+    margin-top: -12px !important;  /* 🎯 エラー文字が浮いて隙間が潰れるのを防止 */
+    margin-bottom: 20px !important;/* 🎯 次の入力欄との間に強制的に距離を空ける */
     display: block;
     text-shadow: 0 0 8px rgba(244, 63, 94, 0.4);
+    text-align: left;
 }
 
 /* 🖼️ 画像一覧用スタイル（既存維持） */
@@ -205,10 +264,8 @@ span[style*="color:red;"] {
 hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; }
 
 /* ==========================================
-   🤖 顔認証ページ専用：顔面ピッタリ合体化
+   🤖 顔認証ページ専用
    ========================================== */
-
-/* 全体を囲むコンテナ */
 .face {
     max-width: 800px;
     width: 100%;
@@ -225,7 +282,6 @@ hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; 
     gap: 24px;
 }
 
-/* タイトル文字（.title h1）のネオン化 */
 .title h1 {
     font-size: 32px;
     font-weight: 800;
@@ -239,9 +295,8 @@ hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; 
     text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
 }
 
-/* 🎥 ビデオと分析シートをセットで重ねる光る外枠 */
 .video-wrapper {
-    position: relative; /* 中の要素をこれ基準で重ねる */
+    position: relative;
     padding: 2px;
     background: linear-gradient(135deg, #06b6d4, #6366f1);
     border-radius: 12px;
@@ -249,28 +304,25 @@ hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; 
     box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
 }
 
-/* カメラ映像（単体で鏡写しに反転） */
 #video {
     display: block;
     background-color: #020617;
     border-radius: 10px;
     max-width: 100%;
     height: auto;
-    transform: scaleX(-1); /* カメラ映像だけを反転 */
+    transform: scaleX(-1);
 }
 
-/* 🎯 分析シート（枠・点・文字）をカメラの真上に1ミリのズレもなく完全同期 */
 canvas {
     position: absolute !important;
-    top: 2px !important;    /* パディング分内側に合わせる */
-    left: 2px !important;   /* パディング分内側に合わせる */
-    width: calc(100% - 4px) !important;  /* ビデオと完全に同じ横幅 */
-    height: calc(100% - 4px) !important; /* ビデオと完全に同じ縦幅 */
-    z-index: 10 !important;   /* カメラ映像より手前に配置 */
-    pointer-events: none;     /* クリック透過 */
+    top: 2px !important;
+    left: 2px !important;
+    width: calc(100% - 4px) !important;
+    height: calc(100% - 4px) !important;
+    z-index: 10 !important;
+    pointer-events: none;
 }
 
-/* スキャンアニメーション */
 .video-wrapper::after {
     content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
     background: linear-gradient(90deg, transparent, #38bdf8, #ffffff, #38bdf8, transparent);
@@ -281,7 +333,6 @@ canvas {
     0% { top: 0%; opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { top: 100%; opacity: 0; }
 }
 
-/* 🔗 編集ボタン */
 .face > a {
     display: block;
     width: 100%;
