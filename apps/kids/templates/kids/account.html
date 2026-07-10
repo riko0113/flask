@@ -5,6 +5,9 @@
 <a href="{{ url_for('crud.edit_user', user_id=current_user.id, mode='kids') }}" >
     登録情報の編集
 </a>
+<a href="{{ url_for('auth.logout') }}" method="post">
+    ログアウト
+</a>
 <div class="dt-user-posts-header">
     <h2>{{ selected_user.username }} さんの投稿一覧</h2>
     <a href="{{ url_for('kids.index') }}" class="btn-back">一覧に戻る</a>
