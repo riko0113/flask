@@ -39,9 +39,11 @@ def create_user():
 
     return render_template("crud/create.html", form=form)
 
-@crud.route("/users/<user_id>", methods=["GET","POST"])
+@crud.route("/users/<user_id>/edit", methods=["GET","POST"])
 @login_required
 def edit_user(user_id):
+    mode = request.args.get("mode", "adult") or request.form.get("mode", "adult")
+
     if int(user_id) != current_user.id:
         abort(403)
 
@@ -51,18 +53,25 @@ def edit_user(user_id):
 
     form = UserForm()
 
-    if request.method == "GET":
-        form.username.data = user.username
-        form.email.data = user.email
+    if request.method == "POST":
+        mode = request.form.get("mode", "adult")
 
-    if form.validate_on_submit():
-        user.username = form.username.data
-        user.email = form.email.data
-        user.password = form.password.data
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for("crud.users"))
+        if form.validate_on_submit():
+            user.username = form.username.data
+            user.email = form.email.data
+
+            if form.password.data:
+                user.password = form.password.data 
+
+            db.session.add(user)
+            db.session.commit()
+
+            if mode == "kids":
+                return redirect(url_for("kids.account", user_id=current_user.id))
+            else:
+                return redirect(url_for("detector.account", user_id=current_user.id))
     
+    # GETのとき、または保存に失敗したときは編集画面をしっかり表示する
     return render_template("crud/edit.html", user=user, form=form)
 
 @crud.route("/users/<user_id>/delete", methods=["POST"])
@@ -86,24 +95,23 @@ def verify_age():
     if real_age is None:
         return jsonify({"status": "error", "message": "誕生日が登録されていません"}), 400
 
-    # 💡 【照合ロジック】誤差±5歳以内なら本人と判定
+    # 💡 【照合ロジック】誤差±2歳以内なら本人と判定
     age_difference = abs(camera_age - real_age)
     
-    if age_difference <= 5 and real_age >= 20:
+    if age_difference <= 2 and real_age >= 20:
         return jsonify({
             "status": "success", 
             "match": True, 
             "redirect_url": url_for("detector.index")  # ★成功時の遷移先URL
         })
-    elif age_difference <= 5 and real_age < 20:
+    elif age_difference <= 2 and real_age < 20:
         return jsonify({
             "status": "success", 
             "match": False, 
-            "redirect_url": "/detector/index"  # ★成功時の遷移先URL
+            "redirect_url": url_for("kids.index")  # ★成功時の遷移先URL
         })
     else:
         return jsonify({
-            "status": "error", 
-            "match": False,
-            "redirect_url": "/detector/index"   # ★失敗時の遷移先URL
+            "status": "error",
+            "message": "年齢の認証に失敗しました。再試行してください。"
         })

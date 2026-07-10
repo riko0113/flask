@@ -3,7 +3,7 @@ from pathlib import Path
 from apps.app import db
 from apps.crud.models import User
 from apps.detector.models import UserImage
-from apps.detector.forms import UploadImageForm, DeleteForm
+from apps.detector.forms import UploadImageForm, DeleteForm, EditForm
 from flask import (
     Blueprint,
     current_app,
@@ -11,36 +11,29 @@ from flask import (
     send_from_directory,
     redirect,
     url_for,
+    request,
 )
 from flask_login import current_user, login_required
+from sqlalchemy import or_
 
 
 detector = Blueprint("detector", __name__, template_folder="templates")
 
 @detector.route("/")
+@login_required
 def index():
     user_images = (
         db.session.query(User, UserImage)
-        .join(UserImage)
-        .filter(User.id == UserImage.user_id)
+        .join(UserImage, User.id == UserImage.user_id)
+        .filter(User.id == current_user.id)
         .all()
     )
-    
-    user_image_tag_dict = {}
-    for user_image in user_images:
-        user_image_tags = (
-            db.session.query(UserImageTag)
-            .fileter(UserImageTag.user_image_id == user_image.UserImage.id)
-            .all()
-        )
-        user_image_tag_dict[user_image.UserImage.id] = user_image_tags
-    
+
     delete_form = DeleteForm()
- 
+
     return render_template(
         "detector/index.html",
         user_images=user_images,
-        user_image_tag_dict=user_image_tag_dict,
         delete_form=delete_form
     )
 
@@ -66,7 +59,7 @@ def upload_image():
             user_id=current_user.id,
             image_path=image_uuid_file_name,
             genre=form.genre.data,
-            comment=form.comment.data,
+            comment=form.comment.data
         )
         db.session.add(user_image)
         db.session.commit()
@@ -74,18 +67,95 @@ def upload_image():
         return redirect(url_for("detector.index"))
     return render_template("detector/upload.html", form=form)
 
-@dt.route("/images/delete/<string:image_id>", methods=["POST"])
+@detector.route("/delete/<int:image_id>", methods=["POST"])
 @login_required
 def delete_image(image_id):
-    try:
-        db.session.query(UserImageTag).fileter(
-            UserImageTag.user_image_id == image_id
-        ).delete()
-        db.session.query(UserImage).fileter(UserImage.id == image_id).delete()
-        db.session.commit()
-    except SQLAlchemyError as e:
-        flash("投稿削除処理でエラーが発生しました。")
-        current_app.logger.error(e)
-        db.session.rollback()
-    
+    image = UserImage.query.get_or_404(image_id)
+
+    if str(image.user_id) != str(current_user.id):
+        return redirect(url_for("detector.index"))
+
+    db.session.delete(image)
+    db.session.commit()
+
     return redirect(url_for("detector.index"))
+
+@detector.route("/user/<int:user_id>/posts")
+@login_required
+def account(user_id):
+    selected_user = User.query.get_or_404(user_id)
+    
+    user_images = db.session.query(User, UserImage).join(
+        UserImage, User.id == UserImage.user_id
+    ).filter(User.id == user_id).all()
+    
+    return render_template(
+        "detector/account.html",
+        selected_user=selected_user,
+        user_images=user_images
+    )
+
+@detector.route("/edit/<int:image_id>", methods=["GET", "POST"])
+@login_required
+def edit_image(image_id):
+    image = UserImage.query.get_or_404(image_id)
+
+    # 自分の投稿だけ編集可能
+    if int(image.user_id) != int(current_user.id):
+        return redirect(url_for("detector.index"))
+    form = EditForm(obj=image)
+
+    if form.validate_on_submit():
+        # ジャンル・コメントを更新
+        image.genre = form.genre.data
+        image.comment = form.comment.data
+        # 画像が選択された場合のみ更新
+        if form.image.data:
+            file = form.image.data
+            ext = Path(file.filename).suffix
+            filename = str(uuid.uuid4()) + ext
+            image_path = Path(
+                current_app.config["UPLOAD_FOLDER"],
+                filename
+            )
+            file.save(image_path)
+            image.image_path = filename
+
+        db.session.commit()
+        return redirect(url_for("detector.index"))
+
+    return render_template("detector/edit.html", form=form,  image=image)
+
+@detector.route("/search", methods=["GET"])
+@login_required
+def search():
+    # 1. リクエストから検索ワードを取得
+    search_text = request.args.get("search")
+
+    # 2. 基本となるクエリ（UserとUserImageを結合）
+    query = db.session.query(User, UserImage).join(
+        UserImage, User.id == UserImage.user_id
+    )
+
+    # 3. 検索ワードがある場合、ジャンルまたはコメントでフィルタリング
+    if search_text:
+        like_text = f"%{search_text}%"
+        query = query.filter(
+            or_(
+                UserImage.genre.like(like_text),     # ジャンルに部分一致
+                UserImage.comment.like(like_text)     # コメントに部分一致
+            )
+        )
+
+    # クエリの実行（絞り込まれた結果をリストで取得）
+    filtered_user_images = query.all()
+
+    # 4. 画面に必要なフォームの用意
+    delete_form = DeleteForm()
+
+    # 5. テンプレートへ渡す
+    return render_template(
+        "detector/index.html",
+        user_images=filtered_user_images,
+        delete_form=delete_form,
+    )

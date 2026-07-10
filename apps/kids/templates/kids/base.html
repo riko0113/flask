@@ -3,12 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock  %}</title>
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/kids.css') }}" />
 </head>
 <body>
+    {% if request.endpoint in ['kids.index', 'kids.search'] %}
+            <form
+              method="GET"
+              action="{{url_for('kids.search')}}"
+              name ="dtSearchForm"
+            >
+                <div class="search-group">
+                {% if request.args.get("search") %}
+                    <input 
+                      type="search"
+                      id="dt-search"
+                      class="form-control col-md-12 dt-search"
+                      placeholder="検索"
+                      name="search"
+                      value="{{request.args.get('search')}}"
+                    />
+                    {% else %}
+                    <input 
+                      type="search"
+                      id="dt-search"
+                      class="form-control col-md-12 dt-search"
+                      placeholder="検索"
+                      name="search"
+                    />
+                {% endif %}
+                <button type="submit" class="dt-search-btn">🔍</button>
+                </div>
+            </form>
+    {% endif %}
     {% block content %}{% endblock  %}
 </body>
 </html>

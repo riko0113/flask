@@ -1,0 +1,68 @@
+{% extends "kids/base.html" %}
+{% block title %}kidsのみんな{% endblock %}
+{% block content %}
+<div class="dt-top-profile-container">
+    <a href="{{ url_for('kids.account', user_id=current_user.id, mode='kids') }}" class="dt-top-profile-link" title="マイページへ">
+        <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
+    </a>
+</div>
+
+<h3>kidsのみんな</h3>
+
+<div class="col-md-10 text-right dt-image-register-btn">
+    <a href="{{ url_for('kids.upload_image') }}" class="btn btn-primary">
+        画像新規登録
+    </a>
+</div>
+
+{% for user, image in user_images %}
+<div class="card col-md-7 dt-image-content">
+
+    <header class="d-flex justify-content-between">
+        <div class="dt-image-username">
+            {{ user.username }}
+        </div>
+        <form
+          action="{{ url_for('kids.delete_image', image_id=image.id) }}"
+          method="POST"
+        >
+        {{ delete_form.csrf_token }}
+
+        {% if current_user.id == user.id %}
+          <button 
+            type="button" 
+            class="btn btn-success" 
+            onclick="location.href='{{ url_for('kids.edit_image', image_id=image.id) }}'"
+          >
+            編集
+          </button>
+          {{ delete_form.submit(class="btn btn-danger btn-sm") }}
+        {% else %}
+          <button 
+            type="button" 
+            class="btn btn-success" 
+          >
+            編集
+          </button>
+          {{ delete_form.submit(class="btn btn-danger btn-sm", disabled=True) }}
+        {% endif %}
+        </form>
+    </header>
+
+    <section>
+        <img
+            src="{{ url_for('kids.image_file', filename=image.image_path) }}"
+            alt="アップロード画像"
+            class="img-fluid"
+        >
+    </section>
+
+    <div class="card-body">
+        <p>ジャンル：{{ image.genre }}</p>
+        <p>{{ image.comment }}</p>
+    </div>
+
+</div>
+{% endfor %}
+
+{% endblock %}
