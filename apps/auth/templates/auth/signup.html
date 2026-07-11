@@ -23,7 +23,8 @@
 
       <div class="form-group">
           <label class="result-label">📅 生年月日</label>
-          <input type="date" name="birthday" class="cyber-input" required>
+          <!-- 💡 フォームオブジェクト経由で date 入力欄を出力するように修正 -->
+          {{ form.birthday(type="date", class="cyber-input", required="required") }}
           {% if form.birthday and form.birthday.errors %}
             {% for error in form.birthday.errors %}
             <span class="error-text">▶ {{ error }}</span>
