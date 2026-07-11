@@ -2,60 +2,62 @@
 {% block title %}ユーザー編集{% endblock %}
 {% block content %}
 
-<div class="crud-container-card small-size">
-  <h2>ユーザー編集</h2>
+<div class="crud-wrapper">
+  <div class="crud-container-card">
+    <h2 class="cyber-title">⚡ ユーザー編集</h2>
 
-  <form
-    action="{{ url_for('crud.edit_user', user_id=user.id) }}"
-    method="POST"
-    novalidate="novalidate"
-  >
-    <input type="hidden" name="mode" value="{{ request.args.get('mode', 'adult') }}">
-    {{ form.csrf_token }}
-    
-    <div class="form-group">
-      {{ form.username.label }} 
-      {{ form.username(placeholder="ユーザー名") }}
-      {% for error in form.username.errors %}
-      <span class="error-text">{{ error }}</span>
-      {% endfor %}
-    </div>
-    
-    <div class="form-group">
-      {{ form.email.label }} 
-      {{ form.email(placeholder="メールアドレス") }}
-      {% for error in form.email.errors %}
-      <span class="error-text">{{ error }}</span>
-      {% endfor %}
-    </div>
-    
-    <div class="form-group">
-      {{ form.password.label }} 
-      {{ form.password(placeholder="パスワード") }}
-      {% for error in form.password.errors %}
-      <span class="error-text">{{ error }}</span>
-      {% endfor %}
-    </div>
-    
-    <div class="main-action">
-      <input type="submit" value="更新" class="btn-main-update" />
-    </div>
+    <form action="{{ url_for('crud.edit_user', user_id=user.id) }}" method="POST" novalidate="novalidate">
+      <input type="hidden" name="mode" value="{{ request.args.get('mode', 'adult') }}">
+      {{ form.csrf_token }}
+      
+      <div class="form-group">
+        <label class="result-label">👤 ユーザー名</label>
+        {{ form.username(placeholder="ユーザー名を入力...", class="cyber-input") }}
+        {% for error in form.username.errors %}
+        <span class="error-text">▶ {{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      <div class="form-group">
+        <label class="result-label">📧 メールアドレス</label>
+        {{ form.email(placeholder="メールアドレスを入力...", class="cyber-input") }}
+        {% for error in form.email.errors %}
+        <span class="error-text">▶ {{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      <div class="form-group input-to-button-gap">
+        <label class="result-label">🔒 パスワード</label>
+        {{ form.password(placeholder="パスワードを入力...", class="cyber-input") }}
+        {% for error in form.password.errors %}
+        <span class="error-text">▶ {{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      <!-- 更新ボタン -->
+      <div class="main-action">
+        <input type="submit" value="変更を更新する" class="cyber-btn-primary" />
+      </div>
 
-    <div class="crud-action-subrow">
-      {% if request.args.get('mode') == 'kids' %}
-        <a href="{{ url_for('kids.account', user_id=user.id) }}" class="btn-sub-back">戻る</a>
-      {% else %}
-        <a href="{{ url_for('detector.account', user_id=user.id) }}" class="btn-sub-back">戻る</a>
-      {% endif %}
+      <hr>
 
-      <button 
-        type="submit" 
-        formaction="{{ url_for('crud.delete_user', user_id=user.id) }}" 
-        class="btn-sub-delete">
-        削除
-      </button>
-    </div>
-  </form>
+      <!-- 戻る・削除ボタンのサブエリア -->
+      <div class="crud-action-subrow">
+        {% if request.args.get('mode') == 'kids' %}
+          <a href="{{ url_for('kids.account', user_id=user.id) }}" class="cyber-btn-sub">[ 戻る ]</a>
+        {% else %}
+          <a href="{{ url_for('detector.account', user_id=user.id) }}" class="cyber-btn-sub">[ 戻る ]</a>
+        {% endif %}
+
+        <button 
+          type="submit" 
+          formaction="{{ url_for('crud.delete_user', user_id=user.id) }}" 
+          class="cyber-btn-delete">
+          [ データを削除 ]
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 
 {% endblock %}

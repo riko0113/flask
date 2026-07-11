@@ -1,54 +1,58 @@
-@charset "UTF-8";
+/* ==========================================
+   🌐 アプリケーション全体 共通・基盤スタイル
+   ========================================== */
 
-body.cyber-body { 
-    font-family: 'Helvetica Neue', Arial, sans-serif; 
-    background-color: #020617; 
-    color: #f1f5f9;
+/* 全体のリセットと電脳世界のカラー設定 */
+html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #020617; /* 深宇宙のような極暗ネイビー */
+    color: #f8fafc; /* 視認性の良いクリアホワイト */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans JP', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
-.cyber-panel {
-    background: rgba(15, 23, 42, 0.8) !important; 
-    padding: 35px; 
-    border-radius: 12px; 
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.05) !important;
-    backdrop-filter: blur(8px);
-    position: relative;
-    overflow: hidden;
+/* ボックスサイズの計算をパディング込みに統一 */
+*, ::before, ::after {
+    box-sizing: border-box;
 }
 
-.cyber-panel::after {
-    content: ''; 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #38bdf8, transparent);
-    box-shadow: 0 0 8px #38bdf8; 
-    animation: scan-line 4s linear infinite;
-}
-@keyframes scan-line {
-    0% { top: 0%; opacity: 0; } 
-    5% { opacity: 1; } 
-    95% { opacity: 1; } 
-    100% { top: 100%; opacity: 0; }
+/* 汎用リンクの基本装飾 */
+a {
+    color: #38bdf8;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-.cyber-panel a { 
-    color: #38bdf8 !important; 
-    text-decoration: none; 
-    font-weight: bold;
-    transition: all 0.2s ease; 
+a:hover {
+    color: #7dd3fc;
 }
-.cyber-panel a:hover { 
-    color: #7dd3fc !important; 
-    text-shadow: 0 0 8px rgba(56, 189, 248, 0.4); 
+
+/* スクロールバーの電脳カスタマイズ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
-.cyber-panel hr { 
-    border: 0; 
-    border-top: 1px solid rgba(255, 255, 255, 0.1); 
-    margin: 25px 0; 
+
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #38bdf8;
+}
+
+/* セレクション（文字選択時）の発光 */
+::selection {
+    background: rgba(56, 189, 248, 0.3);
+    color: #ffffff;
 }
