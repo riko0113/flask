@@ -2,33 +2,40 @@
 {% block title %}ユーザー過去投稿{% endblock %}
 {% block content %}
 
-<a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" >
-    登録情報の編集
-</a>
-<a href="{{ url_for('auth.logout') }}" method="post">
-    ログアウト
-</a>
-<div class="dt-user-posts-header">
-    <h2>{{ selected_user.username }} さんの投稿一覧</h2>
-    <a href="{{ url_for('detector.index') }}" class="btn-back">一覧に戻る</a>
-</div>
+<!-- ⚡ 中央ロック開始 -->
+<div class="dt-content-width">
 
-{% for user, image in user_images %}
-<div class ="card col-md-7 image-content-between">
-    <header class ="d-flex justify-content-">
-        <div class ="dt-image-username">{{ user.username }}</div>
-    </header>
-    
-    <section>
-        <img src = "{{ url_for('detector.image_file', filename = image.image_path) }}"
-             alt = "アップロード画像"
-        />
-        <p>ジャンル：{{ image.genre }}</p>
-        <p>{{ image.comment }}</p>
-    </section>
+    <div class="dt-nav-row" style="border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 20px; margin-bottom: 30px;">
+        <div>
+            <a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" class="cyber-btn cyber-btn-secondary" style="margin-right: 10px;">
+                ⚙️ 登録情報の編集
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="cyber-btn cyber-btn-danger" style="text-decoration: none;">
+                🚪 ログアウト
+            </a>
+        </div>
+        <a href="{{ url_for('detector.index') }}" class="cyber-btn cyber-btn-secondary">🔙 一覧に戻る</a>
+    </div>
+
+    <h3 class="cyber-title" style="font-size: 20px; margin-bottom: 25px;">✨ {{ selected_user.username }} さんの投稿一覧</h3>
+
+    {% for user, image in user_images %}
+    <div class="dt-card">
+        <header class="dt-card-header">
+            <div class="dt-image-username">👤 {{ user.username }}</div>
+        </header>
+        
+        <section>
+            <img src="{{ url_for('detector.image_file', filename=image.image_path) }}" alt="アップロード画像" />
+            <p class="dt-info-text"><strong style="color: #38bdf8;">🏷️ ジャンル：</strong>{{ image.genre }}</p>
+            <p class="dt-info-text" style="color: #f8fafc; margin-top: 10px;">{{ image.comment }}</p>
+        </section>
+    </div>
+    {% else %}
+        <p style="color: #64748b; text-align: center; padding: 40px 0;">まだ投稿がありません。</p>
+    {% endfor %}
+
 </div>
-{% else %}
-    <p class="no-posts">まだ投稿がありません。</p>
-{% endfor %}
+<!-- ⚡ 中央ロック終了 -->
 
 {% endblock %}
