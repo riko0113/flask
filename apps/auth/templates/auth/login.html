@@ -1,47 +1,44 @@
 {% extends "auth/base.html" %}
-{% block title %}ログイン{% endblock %}
+{% block title %}SYSTEM ACCESS{% endblock %}
 {% block content %}
 
 <div class="auth-wrapper">
   <div class="auth-container-card">
-    <h2>ログイン</h2>
+    <h2 class="cyber-title">⚡ SYSTEM SIGN IN (ログイン)</h2>
     
-    <form
-      action="{{ url_for('auth.login')}}"
-      method="post"
-      novalidate="novalidate"
-    >
+    <form action="{{ url_for('auth.login') }}" method="post" novalidate="novalidate">
       {% for message in get_flashed_messages() %}
-      <p class="flash-message">{{ message }}</p>
+      <div class="cyber-quote-box">⚠️ WARNING: {{ message }}</div>
       {% endfor %} 
       
       {{ form.csrf_token }}
 
-      <div class="form-group">
-        {{ form.email.label }} 
-        {{ form.email(placeholder="メールアドレス") }}
+      <div class="form-group" style="margin-bottom: 20px;">
+        {{ form.email.label(class="result-label") }} 
+        {{ form.email(placeholder="メールアドレスを入力...", class="cyber-input", style="width: 100%;") }}
         {% for error in form.email.errors %}
-        <span class="error-text">{{ error }}</span>
+        <span class="error-text">▶ {{ error }}</span>
         {% endfor %}
       </div>
 
-      <div class="form-group">
-        {{ form.password.label }} 
-        {{ form.password(placeholder="パスワード") }}
+      <div class="form-group" style="margin-bottom: 25px;">
+        {{ form.password.label(class="result-label") }} 
+        {{ form.password(placeholder="パスワードを入力...", class="cyber-input", style="width: 100%;") }}
         {% for error in form.password.errors %}
-        <span class="error-text">{{ error }}</span>
+        <span class="error-text">▶ {{ error }}</span>
         {% endfor %}
       </div>
 
-      <div class="main-action">
-        {{ form.submit() }}
+      <div class="main-action" style="text-align: right;">
+        <input type="submit" class="cyber-btn-primary" value="[ ACCESS AUTHORIZE ]">
       </div>
     </form>
 
-    <div class="auth-action-subrow">
-      <a href="{{ url_for('crud.create_user') }}">
-        <button type="button">新規登録</button>
-      </a>
+    <hr>
+
+    <div class="auth-links" style="text-align: center; font-size: 13px;">
+      <span style="color: #64748b;">未登録のデバイスですか？</span> 
+      <a href="{{ url_for('auth.signup') }}">[ INITIALIZE NEW ACCOUNT ]</a>
     </div>
   </div>
 </div>

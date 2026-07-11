@@ -1,61 +1,62 @@
 {% extends "auth/base.html" %}
-{% block title %}ユーザー新規登録{% endblock %}
+{% block title %}アカウント新規登録{% endblock %}
 {% block content %}
 
-<div class="auth-wrapper">
-  <div class="auth-container-card">
-    <h2>ユーザー新規登録</h2>
+<div class="box">
+    <h2 class="cyber-title">⚡ 新規アカウント作成</h2>
 
-    <form
-      action="{{ url_for('auth.signup', next=request.args.get('next')) }}"
-      method="POST"
-      novalidate="novalidate"
-    >
+    <form action="{{ url_for('auth.signup', next=request.args.get('next')) }}" method="POST" novalidate="novalidate">
       {% for message in get_flashed_messages() %}
-      <p class="flash-message">{{ message }}</p>
+      <div class="cyber-quote-box">⚠️ 警告: {{ message }}</div>
       {% endfor %}
       
       {{ form.csrf_token }}
 
       <div class="form-group">
-          {{ form.username.label }}
-          {{ form.username(size=30, placeholder="ユーザー名") }}
+          <label class="result-label">👤 ユーザー名</label>
+          {{ form.username(placeholder="ユーザー名を入力してください...", class="cyber-input") }}
           {% for error in form.username.errors %}
-          <span class="error-text">{{ error }}</span>
+          <span class="error-text">▶ {{ error }}</span>
           {% endfor %}
       </div>
 
-      {% if form.birthday %}
       <div class="form-group">
-          {{ form.birthday.label }}
-          {{ form.birthday() }}
-          {% for error in form.birthday.errors %}
-          <span class="error-text">{{ error }}</span>
-          {% endfor %}
+          <label class="result-label">📅 生年月日</label>
+          <input type="date" name="birthday" class="cyber-input cyber-date-picker" required>
+          {% if form.birthday and form.birthday.errors %}
+            {% for error in form.birthday.errors %}
+            <span class="error-text">▶ {{ error }}</span>
+            {% endfor %}
+          {% endif %}
       </div>
-      {% endif %}
 
       <div class="form-group">
-          {{ form.email.label }} 
-          {{ form.email(placeholder="メールアドレス") }}
+          <label class="result-label">📧 メールアドレス</label>
+          {{ form.email(placeholder="メールアドレスを入力してください...", class="cyber-input") }}
           {% for error in form.email.errors %}
-          <span class="error-text">{{ error }}</span>
+          <span class="error-text">▶ {{ error }}</span>
           {% endfor %}
       </div>
 
       <div class="form-group">
-          {{ form.password.label }} 
-          {{ form.password(placeholder="パスワード") }}
+          <label class="result-label">🔒 パスワード</label>
+          {{ form.password(placeholder="パスワードを入力してください...", class="cyber-input") }}
           {% for error in form.password.errors %}
-          <span class="error-text">{{ error }}</span>
+          <span class="error-text">▶ {{ error }}</span>
           {% endfor %}
       </div>
 
-      <div class="main-action">
-          {{ form.submit() }}
+      <div class="button-container">
+          <button type="submit" class="cyber-btn-primary">新規アカウントを登録する</button>
       </div>
     </form>
-  </div>
+
+    <hr>
+
+    <div class="auth-footer-links">
+        <span>すでにアカウントをお持ちですか？</span>
+        <a href="{{ url_for('auth.login') }}">[ ログイン画面へ戻る ]</a>
+    </div>
 </div>
 
 {% endblock %}
