@@ -4,12 +4,18 @@
 
 <div class="dt-content-width">
 
-    <!-- 💡 タイトルを完全に中央寄せにするための専用ラッパー -->
-    <div class="dt-title-center-zone">
+    <!-- 💡 タイトル行：中央にタイトル、右端にプロフィールを絶対配置で綺麗に並べる -->
+    <div class="dt-title-row-zone">
         <h2 class="cyber-title">⚡ 大人の世界</h2>
+        
+        <div class="dt-top-profile-container">
+            <a href="{{ url_for('detector.account', user_id=current_user.id) }}" class="dt-top-profile-link" title="マイページへ">
+                <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
+            </a>
+        </div>
     </div>
 
-    <!-- 💡 新規登録ボタンも中央に配置 -->
+    <!-- 💡 新規登録ボタンをその下に中央配置 -->
     <div class="dt-action-center-zone">
         <a href="{{ url_for('detector.upload_image') }}" class="cyber-btn cyber-btn-primary">
             ＋ 新しいお酒を登録する
@@ -38,7 +44,6 @@
             </form>
         </header>
 
-        <!-- 💡 セクション内も中央寄せ -->
         <section class="dt-card-body-center">
             <img src="{{ url_for('detector.image_file', filename=image.image_path) }}" alt="アップロード画像" />
             <p class="dt-info-text"><strong style="color: #38bdf8;">🏷️ ジャンル：</strong>{{ image.genre }}</p>
