@@ -4,18 +4,12 @@
 
 <div class="dt-content-width">
 
-    <!-- 💡 タイトル行：中央にタイトル、右端にプロフィールを絶対配置で綺麗に並べる -->
+    <!-- 💡 アイコンはbase.htmlに移動したから、ここは完全に真ん中の一文だけでOK -->
     <div class="dt-title-row-zone">
-        <h2 class="cyber-title">⚡ 大人の世界</h2>
-        
-        <div class="dt-top-profile-container">
-            <a href="{{ url_for('detector.account', user_id=current_user.id) }}" class="dt-top-profile-link" title="マイページへ">
-                <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
-            </a>
-        </div>
+        <h2 class="cyber-title">⚡大人の世界</h2>
     </div>
 
-    <!-- 💡 新規登録ボタンをその下に中央配置 -->
+    <!-- 新規登録ボタン -->
     <div class="dt-action-center-zone">
         <a href="{{ url_for('detector.upload_image') }}" class="cyber-btn cyber-btn-primary">
             ＋ 新しいお酒を登録する

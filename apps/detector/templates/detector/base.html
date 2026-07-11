@@ -5,14 +5,53 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/detector.css') }}" />
+    
+    <!-- 💡 キャッシュを無視して絶対に右上に並べるための強制スタイル -->
+    <style>
+        .dt-search-header-row {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 15px !important;
+            margin-bottom: 25px !important;
+        }
+        .dt-search-form-flex {
+            flex: 1 !important;
+        }
+        .search-group {
+            display: flex !important;
+            width: 100% !important;
+            gap: 10px !important;
+        }
+        .dt-top-profile-container {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .dt-top-profile-icon {
+            width: 44px !important;
+            height: 44px !important;
+            background: linear-gradient(135deg, #6366f1, #38bdf8) !important;
+            color: white !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 50% !important;
+            font-weight: bold !important;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.5) !important;
+        }
+    </style>
 </head>
 <body>
     <div class="dt-container">
         
-        <!-- 💡 検索バーを一番上に単独で1行配置（これで絶対にはみ出さない） -->
         {% if request.endpoint in ['detector.index', 'detector.search'] %}
-        <div class="dt-content-width dt-search-top-zone">
-            <form method="GET" action="{{url_for('detector.search')}}" name="dtSearchForm" style="width: 100%;">
+        <!-- 💡 検索バーとアイコンを確実に同じ横並びの行に入れる -->
+        <div class="dt-content-width dt-search-header-row">
+            <form method="GET" action="{{url_for('detector.search')}}" name="dtSearchForm" class="dt-search-form-flex">
                 <div class="search-group">
                     <input 
                       type="search"
@@ -25,6 +64,12 @@
                     <button type="submit" class="dt-search-btn">🔍</button>
                 </div>
             </form>
+            
+            <div class="dt-top-profile-container">
+                <a href="{{ url_for('detector.account', user_id=current_user.id) }}" style="text-decoration: none;">
+                    <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
+                </a>
+            </div>
         </div>
         {% endif %}
         
