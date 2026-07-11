@@ -1,62 +1,66 @@
-{% extends "detector/base.html" %}
+{% extends "kids/base.html" %}
 {% block title %}{{ selected_user.username }} さんの投稿{% endblock %}
 {% block content %}
 
-<div class="dt-content-width">
+<div class="dt-content-width" style="position: relative;">
 
-    <!-- ボタンたちを横並びで綺麗に整列させるゾーン -->
-    <div class="dt-account-action-zone">
-        {% if current_user.id == selected_user.id %}
-            <a href="{{ url_for('auth.logout') }}" class="cyber-btn cyber-btn-danger">
-                🚪 ログアウト
-            </a>
-        {% endif %}
-        
-        <a href="{{ url_for('detector.index') }}" class="cyber-btn cyber-btn-primary">
+    <!-- 💡 ナビゲーション行：左に戻る、右にログアウト（完全統一） -->
+    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 4px; box-sizing: border-box;">
+        <!-- 左端：一覧に戻る -->
+        <a href="{{ url_for('kids.index') }}" class="btn btn-secondary" style="padding: 6px 16px; font-size: 13px; border-radius: 20px;">
             ⬅️ 一覧に戻る
         </a>
+
+        <!-- 右端：ログアウト -->
+        {% if current_user.id == selected_user.id %}
+            <div style="display: flex; gap: 8px;">
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger" style="padding: 6px 14px; font-size: 12px; border-radius: 20px; background: rgba(244, 63, 94, 0.1) !important; border: 1px solid rgba(244, 63, 94, 0.4) !important; color: #f43f5e !important;">
+                    🚪 ログアウト
+                </a>
+            </div>
+        {% endif %}
     </div>
 
-    <!-- タイトル -->
-    <div class="dt-title-row-zone" style="margin-top: 20px;">
+    <!-- タイトルゾーン -->
+    <div class="dt-title-row-zone" style="margin-bottom: 35px;">
         <h2 class="cyber-title">✨ {{ selected_user.username }} さんの投稿一覧</h2>
     </div>
 
-    <!-- 投稿画像一覧（SQLAlchemyのRowオブジェクト展開に対応） -->
-    {% for user_image in user_images %}
-    <div class="dt-card">
-        <header class="dt-card-header">
-            <div class="dt-image-username">👤 {{ selected_user.username }}</div>
+    <!-- 投稿画像一覧 -->
+    {% for user, image in user_images %}
+    <div class="card col-md-7 image-content-between dt-image-content">
+        <header class="d-flex justify-content-between" style="align-items: center;">
+            <div class="dt-image-username">{{ user.username }}</div>
             
-            <div class="dt-button-group">
+            <!-- 💡 ここを detector の仕様（自分なら有効、他人なら無効化表示）に完全統一 -->
+            <div class="dt-button-group" style="display: flex; gap: 8px;">
                 {% if current_user.id == selected_user.id %}
-                    <!-- 💡 user_image.UserImage.id で確実にIDを取得 -->
-                    <button type="button" class="cyber-btn cyber-btn-secondary" onclick="location.href='{{ url_for('detector.edit_image', image_id=user_image.UserImage.id) }}'">
+                    <button type="button" class="btn btn-success" style="padding: 4px 12px; font-size: 12px; border-radius: 4px;" onclick="location.href='{{ url_for('kids.edit_image', image_id=image.id) }}'">
                         編集
                     </button>
-                    <form action="{{ url_for('detector.delete_image', image_id=user_image.UserImage.id) }}" method="POST" style="margin: 0; display: inline;">
-                        <button type="submit" class="cyber-btn cyber-btn-danger">削除</button>
+                    <form action="{{ url_for('kids.delete_image', image_id=image.id) }}" method="POST" style="margin: 0; display: inline;">
+                        <button type="submit" class="btn btn-danger" style="padding: 4px 12px; font-size: 12px; border-radius: 4px;">削除</button>
                     </form>
                 {% else %}
-                    <button type="button" class="cyber-btn cyber-btn-secondary" style="opacity: 0.3; cursor: not-allowed;" disabled>
+                    <!-- 他人の投稿の場合は、detector同様にグレーアウトして無効化 -->
+                    <button type="button" class="btn btn-success" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; opacity: 0.3; cursor: not-allowed;" disabled>
                         編集
                     </button>
-                    <button type="button" class="cyber-btn cyber-btn-danger" style="opacity: 0.3; cursor: not-allowed;" disabled>
+                    <button type="button" class="btn btn-danger" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; opacity: 0.3; cursor: not-allowed;" disabled>
                         削除
                     </button>
                 {% endif %}
             </div>
         </header>
-
-        <section class="dt-card-body-center">
-            <!-- 💡 画像パスやコメント、ジャンルも UserImage モデルから直接引き出す -->
-            <img src="{{ url_for('detector.image_file', filename=user_image.UserImage.image_path) }}" alt="アップロード画像" />
-            <p class="dt-info-text"><strong style="color: #38bdf8;">🏷️ ジャンル：</strong>{{ user_image.UserImage.genre }}</p>
-            <p class="dt-info-text" style="color: #f8fafc; margin-top: 10px;">{{ user_image.UserImage.comment }}</p>
+        
+        <section>
+            <img src="{{ url_for('kids.image_file', filename=image.image_path) }}" alt="アップロード画像" />
+            <p>ジャンル：{{ image.genre }}</p>
+            <p>{{ image.comment }}</p>
         </section>
     </div>
     {% else %}
-    <p style="color: #94a3b8; text-align: center; margin-top: 40px;">まだ投稿されたお酒はありません。</p>
+        <p class="no-posts">まだ投稿がありません。</p>
     {% endfor %}
 
 </div>
