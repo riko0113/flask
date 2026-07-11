@@ -240,3 +240,14 @@
 .cyber-btn-secondary:hover { background: #94a3b8; color: #020617; }
 
 .dt-button-group { display: flex; gap: 10px; align-items: center; }
+
+/* 💡 マイページのボタンたちを中央で綺麗に横並びにする */
+.dt-account-action-zone {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 12px !important; /* ボタン同士のすきま */
+    margin-bottom: 30px !important;
+    flex-wrap: wrap !important; /* 画面が狭くなっても崩れず折り返す */
+}
