@@ -55,6 +55,7 @@ class EditForm(FlaskForm):
         choices=[
             ("animal", "動物"),
             ("food", "食べ物"),
+            ("drink", "飲み物"),
             ("game", "ゲーム"),
             ("other", "その他"),
         ],
