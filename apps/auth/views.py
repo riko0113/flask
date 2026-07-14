@@ -21,6 +21,7 @@ def signup():
     if form.validate_on_submit():
         user = User(
             username=form.username.data,
+            birthday=form.birthday.data,
             email=form.email.data,
             password=form.password.data,
         )
@@ -36,7 +37,7 @@ def signup():
 
         next_ = request.args.get("next")
         if next_ is None or not next_.startswith("/"):
-            next_ = url_for("crud.users")
+            next_ = url_for("face.index")
         return redirect(next_)
 
     return render_template("auth/signup.html", form=form)
