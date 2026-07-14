@@ -65,11 +65,11 @@ def upload_image():
 
         # AIチェック
         is_ng, reason, score = check_ng_image(image_path)
-        if is_ng and score > 0.35:
+        if is_ng and score > 0.47:
             # 保存した画像を削除
             image_path.unlink()
             form.image.errors.append(
-                f"これは（{reason}）のため投稿できません。"
+                f"これは{reason}のため投稿できません。"
             )
             return render_template(
                 "kids/upload.html",
