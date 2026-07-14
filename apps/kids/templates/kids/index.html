@@ -1,68 +1,55 @@
 {% extends "kids/base.html" %}
 {% block title %}kidsのみんな{% endblock %}
 {% block content %}
-<div class="dt-top-profile-container">
-    <a href="{{ url_for('kids.account', user_id=current_user.id) }}" class="dt-top-profile-link" title="マイページへ">
-        <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
-    </a>
-</div>
 
-<h3>kidsのみんな</h3>
+<div class="dt-content-width">
 
-<div class="col-md-10 text-right dt-image-register-btn">
-    <a href="{{ url_for('kids.upload_image') }}" class="btn btn-primary">
-        画像新規登録
-    </a>
-</div>
-
-{% for user, image in user_images %}
-<div class="card col-md-7 dt-image-content">
-
-    <header class="d-flex justify-content-between">
-        <div class="dt-image-username">
-            {{ user.username }}
-        </div>
-        <form
-          action="{{ url_for('kids.delete_image', image_id=image.id) }}"
-          method="POST"
-        >
-        {{ delete_form.csrf_token }}
-
-        {% if current_user.id == user.id %}
-          <button 
-            type="button" 
-            class="btn btn-success" 
-            onclick="location.href='{{ url_for('kids.edit_image', image_id=image.id) }}'"
-          >
-            編集
-          </button>
-          {{ delete_form.submit(class="btn btn-danger btn-sm") }}
-        {% else %}
-          <button 
-            type="button" 
-            class="btn btn-success" 
-          >
-            編集
-          </button>
-          {{ delete_form.submit(class="btn btn-danger btn-sm", disabled=True) }}
-        {% endif %}
-        </form>
-    </header>
-
-    <section>
-        <img
-            src="{{ url_for('kids.image_file', filename=image.image_path) }}"
-            alt="アップロード画像"
-            class="img-fluid"
-        >
-    </section>
-
-    <div class="card-body">
-        <p>ジャンル：{{ image.genre }}</p>
-        <p>{{ image.comment }}</p>
+    <div class="dt-title-row-zone">
+        <h2 class="cyber-title">⚡ kidsのみんな</h2>
     </div>
 
+    <!-- 新規登録ボタン -->
+    <div class="dt-image-register-btn">
+        <a href="{{ url_for('kids.upload_image') }}" class="btn btn-primary">
+            ＋ 新しい画像を登録する
+        </a>
+    </div>
+
+    <!-- 投稿一覧 -->
+    {% for user, image in user_images %}
+    <div class="dt-image-content">
+        <header>
+            <div class="dt-image-username">👤 {{ user.username }}</div>
+            
+            <div style="display: flex; gap: 8px; align-items: center;">
+                {% if current_user.id == user.id %}
+                    <button type="button" class="btn btn-success" onclick="location.href='{{ url_for('kids.edit_image', image_id=image.id) }}'">
+                        編集
+                    </button>
+                    <form action="{{ url_for('kids.delete_image', image_id=image.id) }}" method="POST" style="margin: 0; display: inline;">
+                        {{ delete_form.csrf_token }}
+                        {{ delete_form.submit(class="btn btn-danger", value="削除") }}
+                    </form>
+                {% else %}
+                    <button type="button" class="btn btn-success" disabled>編集</button>
+                    <form action="{{ url_for('kids.delete_image', image_id=image.id) }}" method="POST" style="margin: 0; display: inline;">
+                        {{ delete_form.csrf_token }}
+                        {{ delete_form.submit(class="btn btn-danger", value="削除", disabled=True) }}
+                    </form>
+                {% endif %}
+            </div>
+        </header>
+
+        <section style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <img src="{{ url_for('kids.image_file', filename=image.image_path) }}" alt="アップロード画像" />
+            <div class="card-body" style="width: 100%; text-align: center;">
+                <p><strong>🏷️ ジャンル：</strong>{{ image.genre }}</p>
+                <p style="color: #f8fafc; margin-top: 10px;">{{ image.comment }}</p>
+            </div>
+        </section>
+    </div>
+    {% endfor %}
+
 </div>
-{% endfor %}
 
 {% endblock %}

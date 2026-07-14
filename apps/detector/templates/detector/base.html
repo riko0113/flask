@@ -3,43 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
-    />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/detector.css') }}" />
+    
+    <!-- 💡 キャッシュを無視して絶対に右上に並べるための強制スタイル -->
+    <style>
+        .dt-search-header-row {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 15px !important;
+            margin-bottom: 25px !important;
+        }
+        .dt-search-form-flex {
+            flex: 1 !important;
+        }
+        .search-group {
+            display: flex !important;
+            width: 100% !important;
+            gap: 10px !important;
+        }
+        .dt-top-profile-container {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .dt-top-profile-icon {
+            width: 44px !important;
+            height: 44px !important;
+            background: linear-gradient(135deg, #6366f1, #38bdf8) !important;
+            color: white !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 50% !important;
+            font-weight: bold !important;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.5) !important;
+        }
+    </style>
 </head>
 <body>
-    {% if request.endpoint in ['detector.index', 'detector.search'] %}
-            <form
-              method="GET"
-              action="{{url_for('detector.search')}}"
-              name ="dtSearchForm"
-            >
+    <div class="dt-container">
+        
+        {% if request.endpoint in ['detector.index', 'detector.search'] %}
+        <!-- 💡 検索バーとアイコンを確実に同じ横並びの行に入れる -->
+        <div class="dt-content-width dt-search-header-row">
+            <form method="GET" action="{{url_for('detector.search')}}" name="dtSearchForm" class="dt-search-form-flex">
                 <div class="search-group">
-                {% if request.args.get("search") %}
                     <input 
                       type="search"
                       id="dt-search"
-                      class="form-control col-md-12 dt-search"
-                      placeholder="検索"
+                      class="dt-search"
+                      placeholder="キーワードで検索..."
                       name="search"
-                      value="{{request.args.get('search')}}"
+                      value="{{ request.args.get('search', '') }}"
                     />
-                {% else %}
-                    <input 
-                      type="search"
-                      id="dt-search"
-                      class="form-control col-md-12 dt-search"
-                      placeholder="検索"
-                      name="search"
-                    />
-                {% endif %}
-                <button type="submit" class="dt-search-btn">🔍</button>
+                    <button type="submit" class="dt-search-btn">🔍</button>
                 </div>
             </form>
-    {% endif %}
-    {% block content %}{% endblock %}
+            
+            <div class="dt-top-profile-container">
+                <a href="{{ url_for('detector.account', user_id=current_user.id) }}" style="text-decoration: none;">
+                    <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

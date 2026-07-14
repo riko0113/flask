@@ -1,59 +1,51 @@
 {% extends "detector/base.html" %}
 {% block title %}大人の世界{% endblock %}
 {% block content %}
-<div class="dt-top-profile-container">
-    <a href="{{ url_for('detector.account', user_id=current_user.id) }}" class="dt-top-profile-link" title="マイページへ">
-        <span class="dt-top-profile-icon">{{ current_user.username[:1].upper() }}</span>
-    </a>
-</div>
-<!-- 画像アップロード画面へのリンクを追加する-->
-<h3>大人の世界へようこそ</h3>
-<div class ="col-md-10 text-right dt-image-register-btn">
-    <a href ="{{ url_for('detector.upload_image')}}" class= "btn btn-primary">
-        画像新規登録
-    </a>
-</div>
-<!-- 画像一覧を表示-->
-{% for user, image in user_images %}
-<div class ="card col-md-7 image-content-between">
-    <header class="dt-card-header">
-        <div class ="dt-image-username">{{ user.username }}</div>
-        <form
-          action="{{ url_for('detector.delete_image', image_id=image.id) }}"
-          method="POST"
-          class="dt-button-group"
-        >
-        {{ delete_form.csrf_token }}
 
-        {% if current_user.id == user.id %}
-          <button 
-            type="button" 
-            class="btn btn-success" 
-            onclick="location.href='{{ url_for('detector.edit_image', image_id=image.id) }}'"
-          >
-            編集
-          </button>
-          {{ delete_form.submit(class="btn btn-danger btn-sm") }}
-        {% else %}
-          <button 
-            type="button" 
-            class="btn btn-success" 
-          >
-            編集
-          </button>
-          {{ delete_form.submit(class="btn btn-danger btn-sm", disabled=True) }}
-        {% endif %}
-        </form>
-    </header>
+<div class="dt-content-width">
 
-    <section>
-        <img src = "{{url_for('detector.image_file',filename = image.image_path) }}"
-             alt = "アップロード画像"
-        />
-        <p>ジャンル：{{ image.genre }}</p>
-        <p>{{ image.comment }}</p>
-    </section>
+    <!-- 💡 アイコンはbase.htmlに移動したから、ここは完全に真ん中の一文だけでOK -->
+    <div class="dt-title-row-zone">
+        <h2 class="cyber-title">⚡大人の世界</h2>
+    </div>
+
+    <!-- 新規登録ボタン -->
+    <div class="dt-action-center-zone">
+        <a href="{{ url_for('detector.upload_image') }}" class="cyber-btn cyber-btn-primary">
+            ＋ 新しいお酒を登録する
+        </a>
+    </div>
+
+    <!-- 画像一覧を表示 -->
+    {% for user, image in user_images %}
+    <div class="dt-card">
+        <header class="dt-card-header">
+            <div class="dt-image-username">👤 {{ user.username }}</div>
+            <form action="{{ url_for('detector.delete_image', image_id=image.id) }}" method="POST" class="dt-button-group">
+                {{ delete_form.csrf_token }}
+
+                {% if current_user.id == user.id %}
+                    <button type="button" class="cyber-btn cyber-btn-secondary" onclick="location.href='{{ url_for('detector.edit_image', image_id=image.id) }}'">
+                        編集
+                    </button>
+                    {{ delete_form.submit(class="cyber-btn cyber-btn-danger", value="削除") }}
+                {% else %}
+                    <button type="button" class="cyber-btn cyber-btn-secondary" style="opacity: 0.3; cursor: not-allowed;" disabled>
+                        編集
+                    </button>
+                    {{ delete_form.submit(class="cyber-btn cyber-btn-danger", value="削除", disabled=True) }}
+                {% endif %}
+            </form>
+        </header>
+
+        <section class="dt-card-body-center">
+            <img src="{{ url_for('detector.image_file', filename=image.image_path) }}" alt="アップロード画像" />
+            <p class="dt-info-text"><strong style="color: #38bdf8;">🏷️ ジャンル：</strong>{{ image.genre }}</p>
+            <p class="dt-info-text" style="color: #f8fafc; margin-top: 10px;">{{ image.comment }}</p>
+        </section>
+    </div>
+    {% endfor %}
+
 </div>
 
-{% endfor %}
 {% endblock %}

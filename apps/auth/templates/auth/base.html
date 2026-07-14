@@ -2,14 +2,16 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    />
+    <title>{% block title %}{% endblock %} | CORE TERMINAL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}" />
 </head>
 
-<body>
-    {% block content %}{% endblock %}    
-  </body>
+<body class="cyber-body">
+    <div class="cyber-layout" style="display: flex; align-items: center; min-height: 95vh; justify-content: center; padding: 20px; box-sizing: border-box;">
+        <div class="cyber-panel" style="max-width: 450px; width: 100%;">
+            {% block content %}{% endblock %}    
+        </div>
+    </div>
+</body>
 </html>
