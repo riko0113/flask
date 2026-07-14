@@ -1,23 +1,27 @@
 /* ==========================================
-   🪐 アプリ全体共通：サイバーネイビーの土台
+   🌐 アプリケーション全体 共通・基盤スタイル
    ========================================== */
 
-/* 1. 画面全体の背景（宇宙ダークネイビー ＋ ネオングリッド線） */
+/* 全体のリセットと電脳世界のカラー設定 */
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    min-height: 100vh;
-    background-color: #020617; /* 深宇宙ネイビー */
-    background-image: 
-        linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
-    background-size: 30px 30px; /* グリッドの細かさ */
-    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    color: #f8fafc; /* 基本の文字色（白に近いグレー） */
+    height: 100%;
+    background-color: #020617; /* 深宇宙のような極暗ネイビー */
+    color: #f8fafc; /* 視認性の良いクリアホワイト */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans JP', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
-/* 2. 基本的なリンクやリセット（各画面の邪魔をしない） */
+/* ボックスサイズの計算をパディング込みに統一 */
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+/* 汎用リンクの基本装飾 */
 a {
     color: #38bdf8;
     text-decoration: none;
@@ -28,7 +32,27 @@ a:hover {
     color: #7dd3fc;
 }
 
-/* 3. ボックス寸法の計算を統一（ハミ出し防止の超重要ルール） */
-*, *::before, *::after {
-    box-sizing: border-box;
+/* スクロールバーの電脳カスタマイズ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #38bdf8;
+}
+
+/* セレクション（文字選択時）の発光 */
+::selection {
+    background: rgba(56, 189, 248, 0.3);
+    color: #ffffff;
 }
