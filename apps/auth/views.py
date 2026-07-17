@@ -33,12 +33,8 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
-        login_user(user)
-
-        next_ = request.args.get("next")
-        if next_ is None or not next_.startswith("/"):
-            next_ = url_for("face.index")
-        return redirect(next_)
+        flash("登録が完了しました。ログインしてください。")
+        return redirect(url_for("auth.login"))
 
     return render_template("auth/signup.html", form=form)
 
