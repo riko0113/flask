@@ -34,6 +34,26 @@
     <div class="card col-md-7 image-content-between dt-image-content">
         <header class="d-flex justify-content-between">
             <div class="dt-image-username">{{ user.username }}</div>
+
+            <!-- 💡 ここを detector の仕様（自分なら有効、他人なら無効化表示）に完全統一 -->
+            <div class="dt-button-group" style="display: flex; gap: 8px;">
+                {% if current_user.id == selected_user.id %}
+                    <button type="button" class="btn btn-success" style="padding: 4px 12px; font-size: 12px; border-radius: 4px;" onclick="location.href='{{ url_for('kids.edit_image', image_id=image.id) }}'">
+                        編集
+                    </button>
+                    <form action="{{ url_for('kids.delete_image', image_id=image.id) }}" method="POST" style="margin: 0; display: inline;">
+                        <button type="submit" class="btn btn-danger" style="padding: 4px 12px; font-size: 12px; border-radius: 4px;">削除</button>
+                    </form>
+                {% else %}
+                    <!-- 他人の投稿の場合は、detector同様にグレーアウトして無効化 -->
+                    <button type="button" class="btn btn-success" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; opacity: 0.3; cursor: not-allowed;" disabled>
+                        編集
+                    </button>
+                    <button type="button" class="btn btn-danger" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; opacity: 0.3; cursor: not-allowed;" disabled>
+                        削除
+                    </button>
+                {% endif %}
+            </div>
         </header>
         
         <section>

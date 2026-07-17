@@ -49,7 +49,7 @@
 
             <!-- ボタンエリア（右寄せ） -->
             <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                <a href="{{ url_for('kids.index') }}" class="btn btn-secondary">[ 戻る ]</a>
+                <a href="{{ url_for('kids.account', user_id=current_user.id) }}" class="btn btn-secondary">[ 戻る ]</a>
                 {{ form.submit(class="btn btn-primary", value="変更を保存する") }}
             </div>
 
