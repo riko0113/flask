@@ -69,7 +69,7 @@ def upload_image():
             # 保存した画像を削除
             image_path.unlink()
             form.image.errors.append(
-                f"これは（{reason}）のため投稿できません。"
+                f"これは{reason}のため投稿できません。"
             )
             return render_template(
                 "kids/upload.html",
