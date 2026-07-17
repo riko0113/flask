@@ -32,3 +32,26 @@ class UserForm(FlaskForm):
     )
 
     submit = SubmitField("新規登録")
+
+class EditUserForm(FlaskForm):
+    username = StringField(
+        "ユーザー名",
+        validators=[
+            DataRequired(message="ユーザー名は必須です。"),
+            Length(max=30, message="30文字以内で入力してください。"),
+        ],
+    )
+
+    email = StringField(
+        "メールアドレス",
+        validators=[
+            DataRequired(message="メールアドレスは必須です。"),
+            Email(message="メールアドレスの形式で入力してください。"),
+        ],
+    )
+
+    password = PasswordField(
+        "パスワード（変更する場合のみ入力）"
+    )
+
+    submit = SubmitField("更新")

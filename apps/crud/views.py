@@ -1,10 +1,11 @@
 from apps.app import db
 from apps.crud.models import User
-from apps.crud.forms import UserForm
+from apps.crud.forms import UserForm,EditUserForm
 from apps.crud.models import User
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask import abort
 from flask_login import current_user, login_required
+
 
 crud= Blueprint(
     "crud",
@@ -51,7 +52,7 @@ def edit_user(user_id):
     if not user:
         abort(404)
 
-    form = UserForm()
+    form = EditUserForm(obj=user)
 
     if request.method == "POST":
         mode = request.args.get("mode") or request.form.get("mode", "adult")
@@ -60,6 +61,7 @@ def edit_user(user_id):
             user.username = form.username.data
             user.email = form.email.data
 
+            
             if form.password.data:
                 user.password = form.password.data 
 
