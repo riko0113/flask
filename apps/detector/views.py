@@ -25,7 +25,6 @@ def index():
     user_images = (
         db.session.query(User, UserImage)
         .join(UserImage, User.id == UserImage.user_id)
-        .filter(User.id == current_user.id)
         .all()
     )
 
