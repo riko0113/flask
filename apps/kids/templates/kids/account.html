@@ -14,7 +14,7 @@
         <!-- 右端：編集とログアウトをカプセル型にしてスマートに配置 -->
         {% if current_user.id == selected_user.id %}
             <div style="display: flex; gap: 8px;">
-                <a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; border-radius: 20px;">
+                <a href="{{ url_for('crud.edit_user', user_id=current_user.id, mode='kids') }}" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; border-radius: 20px;">
                     👤 編集
                 </a>
                 <a href="{{ url_for('auth.logout') }}" class="btn btn-danger" style="padding: 6px 14px; font-size: 12px; border-radius: 20px; background: rgba(244, 63, 94, 0.1) !important; border: 1px solid rgba(244, 63, 94, 0.4) !important; color: #f43f5e !important;">

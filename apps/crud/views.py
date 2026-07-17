@@ -42,7 +42,7 @@ def create_user():
 @crud.route("/users/<user_id>/edit", methods=["GET","POST"])
 @login_required
 def edit_user(user_id):
-    mode = request.args.get("mode", "adult") or request.form.get("mode", "adult")
+    mode = request.args.get("mode", "adult")
 
     if int(user_id) != current_user.id:
         abort(403)
@@ -54,7 +54,7 @@ def edit_user(user_id):
     form = UserForm()
 
     if request.method == "POST":
-        mode = request.form.get("mode", "adult")
+        mode = request.args.get("mode") or request.form.get("mode", "adult")
 
         if form.validate_on_submit():
             user.username = form.username.data
