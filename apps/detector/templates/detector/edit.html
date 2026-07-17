@@ -1,69 +1,55 @@
 {% extends "detector/base.html" %}
 {% block title %}画像編集{% endblock %}
 {% block content %}
-<div>
-    <h4>画像編集</h4>
-    <p>画像・ジャンル・コメントを編集できます♪</p>
-    <p>画像を変更しない場合は、そのまま更新してください。</p>
 
-    <form
-        action="{{ url_for('detector.edit_image', image_id=image.id) }}"
-        method="post"
-        enctype="multipart/form-data"
-        novalidate="novalidate"
-    >
-        {{ form.csrf_token }}
+<!-- ⚡ 中央ロック開始 -->
+<div class="dt-content-width">
 
-        <div class="mb-3">
-            <img
-                src="{{ url_for('detector.image_file', filename=image.image_path) }}"
-                alt="現在の画像"
-                width="300"
-            >
-        </div>
+    <div class="dt-form-card">
+        <h2 class="cyber-title">⚡ 登録情報の編集</h2>
+        <p style="color: #94a3b8; font-size: 13px; margin-bottom: 25px;">画像を変更しない場合は、そのまま更新ボタンを押してください。</p>
 
-        <div>
-            <label>
-                <span>{{ form.image(class="form-control-file") }}</span>
-            </label>
-        </div>
-        {% for error in form.image.errors %}
-        <span style="color:red;">{{ error }}</span>
-        {% endfor %}
+        <form action="{{ url_for('detector.edit_image', image_id=image.id) }}" method="post" enctype="multipart/form-data" novalidate="novalidate">
+            {{ form.csrf_token }}
 
-        <div>
-            <label>
-                <span>{{ form.genre(class="form-select") }}</span>
-            </label>
-        </div>
-        {% for error in form.genre.errors %}
-        <span style="color:red;">{{ error }}</span>
-        {% endfor %}
+            <div class="form-group" style="align-items: center;">
+                <img src="{{ url_for('detector.image_file', filename=image.image_path) }}" alt="現在の画像" style="max-width: 100%; max-height: 200px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+            </div>
 
-        <div>
-            <label>
-                <span>{{ form.comment(class="form-control", rows="4") }}</span>
-            </label>
-        </div>
-        {% for error in form.comment.errors %}
-        <span style="color:red;">{{ error }}</span>
-        {% endfor %}
+            <div class="form-group">
+                <label class="result-label">📷 新しい画像に変更する（任意）</label>
+                {{ form.image(class="dt-search", style="width: 100%;") }}
+                {% for error in form.image.errors %}
+                <span class="error-text">▶ {{ error }}</span>
+                {% endfor %}
+            </div>
 
-        <hr />
+            <div class="form-group">
+                <label class="result-label">🏷️ ジャンル</label>
+                {{ form.genre(class="dt-search", style="width: 100%;") }}
+                {% for error in form.genre.errors %}
+                <span class="error-text">▶ {{ error }}</span>
+                {% endfor %}
+            </div>
 
-        <div>
-            <label>
-                {{ form.submit(class="btn btn-primary") }}
-            </label>
+            <div class="form-group">
+                <label class="result-label">💬 コメント</label>
+                {{ form.comment(class="dt-search", rows="4", style="width: 100%; height: auto;") }}
+                {% for error in form.comment.errors %}
+                <span class="error-text">▶ {{ error }}</span>
+                {% endfor %}
+            </div>
 
-            <a
-                href="{{ url_for('detector.index') }}"
-                class="btn btn-secondary"
-            >
-                戻る
-            </a>
-        </div>
+            <hr style="border: none; border-top: 1px solid rgba(100, 116, 139, 0.2); margin: 25px 0;">
 
-    </form>
+            <div class="dt-button-group" style="justify-content: flex-end;">
+                <a href="{{ url_for('detector.account', user_id=current_user.id) }}" class="cyber-btn cyber-btn-secondary">[ 戻る ]</a>
+                {{ form.submit(class="cyber-btn cyber-btn-primary", value="変更を保存する") }}
+            </div>
+        </form>
+    </div>
+
 </div>
+<!-- ⚡ 中央ロック終了 -->
+
 {% endblock %}

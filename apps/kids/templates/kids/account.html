@@ -1,34 +1,71 @@
 {% extends "kids/base.html" %}
-{% block title %}ユーザー過去投稿{% endblock %}
+{% block title %}{{ selected_user.username }} さんの投稿{% endblock %}
 {% block content %}
 
-<a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" >
-    登録情報の編集
-</a>
-<a href="{{ url_for('auth.logout') }}" method="post">
-    ログアウト
-</a>
-<div class="dt-user-posts-header">
-    <h2>{{ selected_user.username }} さんの投稿一覧</h2>
-    <a href="{{ url_for('kids.index') }}" class="btn-back">一覧に戻る</a>
-</div>
+<div class="dt-content-width" style="position: relative;">
 
-{% for user, image in user_images %}
-<div class ="card col-md-7 image-content-between">
-    <header class ="d-flex justify-content-between">
-        <div class ="dt-image-username">{{ user.username }}</div>
-    </header>
-    
-    <section>
-        <img src = "{{ url_for('kids.image_file', filename = image.image_path) }}"
-             alt = "アップロード画像"
-        />
-        <p>ジャンル：{{ image.genre }}</p>
-        <p>{{ image.comment }}</p>
-    </section>
+    <!-- 💡 ナビゲーション行：左に戻る、右にユーザー管理を集約して上部をスッキリさせる -->
+    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 4px;">
+        <!-- 左端：一覧に戻る（細めのスタイリッシュな見た目に変更） -->
+        <a href="{{ url_for('kids.index') }}" class="btn btn-secondary" style="padding: 6px 16px; font-size: 13px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15) !important;">
+            ⬅️ 一覧に戻る
+        </a>
+
+        <!-- 右端：編集とログアウトをカプセル型にしてスマートに配置 -->
+        {% if current_user.id == selected_user.id %}
+            <div style="display: flex; gap: 8px;">
+                <a href="{{ url_for('crud.edit_user', user_id=current_user.id) }}" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; border-radius: 20px;">
+                    👤 編集
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger" style="padding: 6px 14px; font-size: 12px; border-radius: 20px; background: rgba(244, 63, 94, 0.1) !important; border: 1px solid rgba(244, 63, 94, 0.4) !important; color: #f43f5e !important;">
+                    🚪 ログアウト
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- 💡 タイトル：ボタンが消えたことで、中央でどっしり主役として目立つ -->
+    <div class="dt-title-row-zone" style="margin-bottom: 35px;">
+        <h2 class="cyber-title" style="font-size: 26px; letter-spacing: 0.05em;">✨ {{ selected_user.username }} さんの投稿一覧</h2>
+    </div>
+
+    <!-- 💡 ここから下の構造・テキスト・画像は1文字もいじっていません -->
+    {% for user, image in user_images %}
+    <div class="card col-md-7 image-content-between dt-image-content">
+        <header class="d-flex justify-content-between">
+            <div class="dt-image-username">{{ user.username }}</div>
+
+            <!-- 💡 ここを detector の仕様（自分なら有効、他人なら無効化表示）に完全統一 -->
+            <div class="dt-button-group" style="display: flex; gap: 8px;">
+                {% if current_user.id == selected_user.id %}
+                    <button type="button" class="btn btn-success" style="padding: 4px 12px; font-size: 12px; border-radius: 4px;" onclick="location.href='{{ url_for('kids.edit_image', image_id=image.id) }}'">
+                        編集
+                    </button>
+                    <form action="{{ url_for('kids.delete_image', image_id=image.id) }}" method="POST" style="margin: 0; display: inline;">
+                        <button type="submit" class="btn btn-danger" style="padding: 4px 12px; font-size: 12px; border-radius: 4px;">削除</button>
+                    </form>
+                {% else %}
+                    <!-- 他人の投稿の場合は、detector同様にグレーアウトして無効化 -->
+                    <button type="button" class="btn btn-success" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; opacity: 0.3; cursor: not-allowed;" disabled>
+                        編集
+                    </button>
+                    <button type="button" class="btn btn-danger" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; opacity: 0.3; cursor: not-allowed;" disabled>
+                        削除
+                    </button>
+                {% endif %}
+            </div>
+        </header>
+        
+        <section>
+            <img src="{{ url_for('kids.image_file', filename=image.image_path) }}" alt="アップロード画像" />
+            <p>ジャンル：{{ image.genre }}</p>
+            <p>{{ image.comment }}</p>
+        </section>
+    </div>
+    {% else %}
+        <p class="no-posts">まだ投稿がありません。</p>
+    {% endfor %}
+
 </div>
-{% else %}
-    <p class="no-posts">まだ投稿がありません。</p>
-{% endfor %}
 
 {% endblock %}

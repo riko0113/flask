@@ -1,189 +1,166 @@
-@charset "UTF-8";
-
 /* ==========================================
-   🌌 全体背景 & リセット設定
+   🛠️ CRUD（データ操作・管理）専用スタイル
    ========================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+
+.crud-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 90vh !important;
+    box-sizing: border-box !important;
+    padding: 40px 20px !important;
 }
 
-body {
-    background-color: #020617; /* 深い宇宙のネイビー */
-    color: #f1f5f9;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    background-image: 
-        linear-gradient(rgba(56, 189, 248, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56, 189, 248, 0.02) 1px, transparent 1px);
-    background-size: 32px 32px;
-}
-
-/* ==========================================
-   🪐 タイトルのネオン化
-   ========================================== */
-h2 {
-    font-weight: 800;
-    font-size: 26px;
-    margin-bottom: 24px;
-    text-align: center;
-    letter-spacing: 2px;
-    background: linear-gradient(90deg, #38bdf8, #818cf8);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-}
-
-/* ==========================================
-   🧪 メインの外枠カード箱（元のサイズに戻したよ！）
-   ========================================== */
 .crud-container-card {
-    max-width: 460px; /* 🎯 元のしっかりした横幅に復活！ */
-    width: 100%;
-    padding: 32px;
-    background: rgba(15, 23, 42, 0.65);
-    border-radius: 16px;
-    border: 1px solid rgba(56, 189, 248, 0.15);
+    max-width: 440px !important;
+    width: 100% !important;
+    padding: 40px !important;
+    background: rgba(15, 23, 42, 0.65) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(56, 189, 248, 0.3) !important;
+    backdrop-filter: blur(12px) !important;
     box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.6),
-        0 0 30px rgba(56, 189, 248, 0.05); 
-    backdrop-filter: blur(12px);
+        0 4px 30px rgba(0, 0, 0, 0.6),
+        0 0 25px rgba(56, 189, 248, 0.15) !important;
+    box-sizing: border-box !important;
+}
+
+.cyber-title {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    margin-top: 0 !important;
+    margin-bottom: 30px !important;
+    letter-spacing: 1px !important;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.3) !important;
+    text-align: left !important;
 }
 
 .crud-container-card form {
-    width: 100%;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .form-group {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    margin-bottom: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
-form label {
-    color: #94a3b8;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+.input-to-button-gap {
+    margin-bottom: 35px !important;
 }
 
-/* ==========================================
-   ⚡ 入力エリア
-   ========================================== */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 12px 14px;
-    background: rgba(2, 6, 23, 0.7) !important; 
+.result-label {
+    display: block !important;
+    color: #94a3b8 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
+    text-align: left !important;
+}
+
+.cyber-input {
+    width: 100% !important;
+    padding: 14px 16px !important;
+    background: rgba(2, 6, 23, 0.75) !important;
     border: 1px solid rgba(56, 189, 248, 0.2) !important;
-    border-radius: 8px !important;
-    color: #f8fafc !important; 
-    font-size: 15px;
-    transition: all 0.2s ease;
-}
-
-input:focus {
+    border-radius: 6px !important;
+    color: #f8fafc !important;
+    font-size: 15px !important;
+    box-sizing: border-box !important;
     outline: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.cyber-input:focus {
     border-color: #38bdf8 !important;
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.25) !important;
+    background: rgba(15, 23, 42, 0.95) !important;
+    box-shadow: 0 0 0 1px #38bdf8, 0 0 15px rgba(56, 189, 248, 0.4) !important;
 }
 
-/* ==========================================
-   🚀 ボタンスタイル（サイズをきっちりコントロール）
-   ========================================== */
 .main-action {
-    margin-top: 24px;
-    margin-bottom: 20px;
+    width: 100% !important;
 }
 
-/* 更新ボタン：メインなので幅いっぱいにドンと配置 */
-input[type="submit"].btn-main-update {
-    display: block;
-    width: 100%;
-    padding: 14px;
+/* 🚀 メインボタン（更新・作成） */
+.cyber-btn-primary {
+    width: 100% !important;
+    padding: 14px !important;
     background: linear-gradient(135deg, #6366f1, #38bdf8) !important;
     border: none !important;
-    border-radius: 8px !important;
-    color: #ffffff !important;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
-    transition: all 0.2s ease;
-}
-
-input[type="submit"].btn-main-update:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.45);
-}
-
-/* 🎯 下部のサブボタン（戻る・削除）の横並びコンテナ */
-.crud-action-subrow {
-    display: flex;
-    justify-content: center; /* 🎯 中央に寄せる */
-    gap: 16px;
-    width: 100%;
-    border-top: 1px solid rgba(148, 163, 184, 0.1);
-    padding-top: 20px;
-}
-
-/* 🎯 「戻る」と「削除」のボタンをきゅっと小さく上品にする設定 */
-.btn-sub-back,
-.btn-sub-delete {
-    display: inline-block;
-    width: auto;          /* 🎯 横幅いっぱい（100%）に広がらないようにする */
-    min-width: 100px;     /* 🎯 押しやすい最低限のサイズは確保 */
-    padding: 8px 20px;    /* 🎯 縦幅をシャープにして、左右に少し余裕をもたせる */
     border-radius: 6px !important;
-    font-weight: 600;
-    font-size: 13px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    letter-spacing: 1.5px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3) !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
 }
 
-/* 戻るボタン（すっきりシックなグレー） */
-.btn-sub-back {
-    background: rgba(30, 41, 59, 0.5) !important;
-    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+.cyber-btn-primary:hover {
+    filter: brightness(1.15) !important;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.5) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* 🔙 サブボタン（戻るリンク） */
+.cyber-btn-sub {
     color: #94a3b8 !important;
-}
-.btn-sub-back:hover {
-    background: rgba(56, 189, 248, 0.08) !important;
-    color: #38bdf8 !important;
-    border-color: #38bdf8 !important;
-}
-
-/* 削除ボタン（洗練されたダークサイバーレッド） */
-.btn-sub-delete {
-    background: rgba(244, 63, 94, 0.06) !important;
-    border: 1px solid rgba(244, 63, 94, 0.3) !important;
-    color: #f43f5e !important;
-}
-.btn-sub-delete:hover {
-    background: rgba(244, 63, 94, 0.15) !important;
-    border-color: #f43f5e !important;
-    box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
 }
 
-/* ==========================================
-   ⚠️ エラーテキスト
-   ========================================== */
-.error-text {
+.cyber-btn-sub:hover {
+    color: #f8fafc !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ❌ 削除ボタン（赤く光る警告色） */
+.cyber-btn-delete {
+    background: none !important;
+    border: none !important;
     color: #f43f5e !important;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 4px;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    padding: 0 !important;
+}
+
+.cyber-btn-delete:hover {
+    color: #fda4af !important;
+    text-shadow: 0 0 10px rgba(244, 63, 94, 0.6) !important;
+}
+
+/* 下部の横並びレイアウト（戻ると削除を綺麗に両端に分ける） */
+.crud-action-subrow {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: 15px !important;
+}
+
+.crud-container-card hr {
+    border: none !important;
+    border-top: 1px solid rgba(100, 116, 139, 0.2) !important;
+    margin: 24px 0 !important;
+}
+
+.crud-links {
+    text-align: center !important;
+    font-size: 13px !important;
 }
